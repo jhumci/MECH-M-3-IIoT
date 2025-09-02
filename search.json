@@ -56,69 +56,6 @@
     "text": "Da noch nicht klar ist, wo das Dashboard in Zukunft laufen soll, entwickeln Sie direkt in einem Container. Sie bereiten einen oder mehrere Container vor, in welchen die Datenhaltung und Auswertung erfolgen. Anforderung hier ist, dass ein Container gestartet werden kann, der sowohl die Daten aller verbundener Sensoren speichert als auch die eigenen Daten visualisiert."
   },
   {
-    "objectID": "docs/Materialien.html",
-    "href": "docs/Materialien.html",
-    "title": "Materialen",
-    "section": "",
-    "text": "Materialen\nSie erhalten in der ersten Sitzung die folgenden Materialien ausgehändigt:\n\nRaspberry Pi Pico W\nTemperatursensor\nKabel\nUSB-Micro-B-Kabel (bei Bedarf)\n\nBitte geben Sie diese nach Ende des Semesters unaufgefordert zurück, erst dann wird die Note freigegeben.\nDer Einsatz anderer Hardware kann mit der Lehrveranstaltungsleitung abgesprochen werden."
-  },
-  {
-    "objectID": "docs/Termin_3_Cloud.html",
-    "href": "docs/Termin_3_Cloud.html",
-    "title": "Synchron",
-    "section": "",
-    "text": "Cloud Computing und Virtualisierung\nSecurity und Safety\n\n\n\n\nSie bereiten eine containerisierte Lösung vor, die sowohl eine Datenbank (z.B. InfluxDB, SQLite, Arrow etc.) als auch eine Visualisierungskomponente (z.B. Grafana, etc.) beinhaltet. Bei der Auswahl der Technologien sind Sie frei, achten Sie jedoch darauf, dass die Lösung ressourcenschonend ist und auf einem typischen Laptop ausgeführt werden kann.\nDie Lösung soll so gestaltet sein, dass sie mit minimalen Aufwand gestartet werden kann (z.B. über ein docker-compose.yml Datei).\nDie Lösung soll die Daten aller verbundenen Sensoren speichern und auch offen für zukünftige Sensoren sein und diese ohne zusätzlichen Konfigurationsaufwand integrieren.\nNeben der Visualisierung der Zeitreihen-Daten, soll die Lösung auch eine übersicht über die verbundenen Sensoren bieten (z.B. Anzahl der Sensoren, letzte Verbindung, etc.).\nBearbeiten sie die Dokumentation so auf, dass ein Nutzer die Anpassung der Config den Mikrocontroller in ein bestehendes WLAN einbinden kann und die kontainersierte Lösung starten und nutzen kann."
-  },
-  {
-    "objectID": "docs/Termin_3_Cloud.html#vorstellung-der-aufgabenstellung",
-    "href": "docs/Termin_3_Cloud.html#vorstellung-der-aufgabenstellung",
-    "title": "Synchron",
-    "section": "",
-    "text": "Sie bereiten eine containerisierte Lösung vor, die sowohl eine Datenbank (z.B. InfluxDB, SQLite, Arrow etc.) als auch eine Visualisierungskomponente (z.B. Grafana, etc.) beinhaltet. Bei der Auswahl der Technologien sind Sie frei, achten Sie jedoch darauf, dass die Lösung ressourcenschonend ist und auf einem typischen Laptop ausgeführt werden kann.\nDie Lösung soll so gestaltet sein, dass sie mit minimalen Aufwand gestartet werden kann (z.B. über ein docker-compose.yml Datei).\nDie Lösung soll die Daten aller verbundenen Sensoren speichern und auch offen für zukünftige Sensoren sein und diese ohne zusätzlichen Konfigurationsaufwand integrieren.\nNeben der Visualisierung der Zeitreihen-Daten, soll die Lösung auch eine übersicht über die verbundenen Sensoren bieten (z.B. Anzahl der Sensoren, letzte Verbindung, etc.).\nBearbeiten sie die Dokumentation so auf, dass ein Nutzer die Anpassung der Config den Mikrocontroller in ein bestehendes WLAN einbinden kann und die kontainersierte Lösung starten und nutzen kann."
-  },
-  {
-    "objectID": "docs/Termin_2_Netzwerke.html",
-    "href": "docs/Termin_2_Netzwerke.html",
-    "title": "Synchron",
-    "section": "",
-    "text": "Die Netzwerkkonfiguration (z.B. WLAN-Zugangsdaten) wird über eine Konfig-Datei settings.toml bereitgestellt, die der Microcontroller beim Start einliest.\nDer Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt):\n\n/config (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).\n/status (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendeten Werte, Verbindungsstatus, Uptime).\n\nEinigen sie sich in der Gesamtgruppe auf die HTTP-API, welche alle Sensoren unterstützen müssen und legen Sie alles fest bis vor dem 3. Synchron-Termin.\nDie Schnittstellen sind in der OpenAPI Specification dokumentiert siehe openapi.yaml und conventions.md.\nEs stehen Testfälle zur Verfügung, um die Funktionalität der HTTP-API zu überprüfen. Ob Sie diese Testfälle mittels eines Test-Frameworks hat Auswirkung auf die Bewertung: (z.B. REST Client in VSCode (befriedigend)), unittest in Python (gut),oder das OpenAPI-Tooling (z.B. Swagger Codegen) nutzen (sehr gut), bleibt Ihnen überlassen. Wie die Testfälle genutzt werden, sollte in der Dokumentation beschrieben sein.\nGehen Sie davon aus, dass die an allen Standorten Zugriff auf ein WLan haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie ein kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie ihre Geräte in das Netzwerk integrieren damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen."
-  },
-  {
-    "objectID": "docs/Termin_2_Netzwerke.html#vorstellung-der-aufgabenstellung",
-    "href": "docs/Termin_2_Netzwerke.html#vorstellung-der-aufgabenstellung",
-    "title": "Synchron",
-    "section": "",
-    "text": "Die Netzwerkkonfiguration (z.B. WLAN-Zugangsdaten) wird über eine Konfig-Datei settings.toml bereitgestellt, die der Microcontroller beim Start einliest.\nDer Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt):\n\n/config (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).\n/status (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendeten Werte, Verbindungsstatus, Uptime).\n\nEinigen sie sich in der Gesamtgruppe auf die HTTP-API, welche alle Sensoren unterstützen müssen und legen Sie alles fest bis vor dem 3. Synchron-Termin.\nDie Schnittstellen sind in der OpenAPI Specification dokumentiert siehe openapi.yaml und conventions.md.\nEs stehen Testfälle zur Verfügung, um die Funktionalität der HTTP-API zu überprüfen. Ob Sie diese Testfälle mittels eines Test-Frameworks hat Auswirkung auf die Bewertung: (z.B. REST Client in VSCode (befriedigend)), unittest in Python (gut),oder das OpenAPI-Tooling (z.B. Swagger Codegen) nutzen (sehr gut), bleibt Ihnen überlassen. Wie die Testfälle genutzt werden, sollte in der Dokumentation beschrieben sein.\nGehen Sie davon aus, dass die an allen Standorten Zugriff auf ein WLan haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie ein kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie ihre Geräte in das Netzwerk integrieren damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen."
-  },
-  {
-    "objectID": "docs/Termin_1_Grundkonzepte_IoT.html",
-    "href": "docs/Termin_1_Grundkonzepte_IoT.html",
-    "title": "Synchron",
-    "section": "",
-    "text": "Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor.\nErstellen Sie einen Fork von diesem Git-Repository und laden Sie jhumci ein\nVerbinden Sie den Sensor mit dem Microcontroller und lesen Sie die Sensordaten indem Sie die code.py anpassen. Für den ersten Schritt können sie auch ein einfaches Skript ohne konfigurationsdatei schreiben.\nImplementieren Sie eine Lösung, die die Spezifikation in den Dateien conventions.md und asyncapi.yaml erfüllt.\nÜberprüfen Sie mittels MQTT Explorer ob Ihre MQTT-Nachrichten korrekt gesendet und empfangen werden.\nRefactoren Sie Ihren Code, um die Lesbarkeit und Wartbarkeit zu verbessern. Legen Sie dazu eine Konfigurationsdatei settings.toml an und definieren Sie sinnvoller Klassen in ihrer Firmware."
-  },
-  {
-    "objectID": "docs/Termin_1_Grundkonzepte_IoT.html#vorstellung-der-aufgabenstellung",
-    "href": "docs/Termin_1_Grundkonzepte_IoT.html#vorstellung-der-aufgabenstellung",
-    "title": "Synchron",
-    "section": "",
-    "text": "Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor.\nErstellen Sie einen Fork von diesem Git-Repository und laden Sie jhumci ein\nVerbinden Sie den Sensor mit dem Microcontroller und lesen Sie die Sensordaten indem Sie die code.py anpassen. Für den ersten Schritt können sie auch ein einfaches Skript ohne konfigurationsdatei schreiben.\nImplementieren Sie eine Lösung, die die Spezifikation in den Dateien conventions.md und asyncapi.yaml erfüllt.\nÜberprüfen Sie mittels MQTT Explorer ob Ihre MQTT-Nachrichten korrekt gesendet und empfangen werden.\nRefactoren Sie Ihren Code, um die Lesbarkeit und Wartbarkeit zu verbessern. Legen Sie dazu eine Konfigurationsdatei settings.toml an und definieren Sie sinnvoller Klassen in ihrer Firmware."
-  },
-  {
-    "objectID": "docs/Dokumentation.html",
-    "href": "docs/Dokumentation.html",
-    "title": "Dokumentation",
-    "section": "",
-    "text": "Hinweis\n\n\n\nHier ist Platz für ihre Dokumentation. Dieses Dokument ist in Quarto geschrieben und wird automatisch in HTML umgewandelt. Da Quarto ein Superset von Markdown ist, können Sie einfach wie gewohnt arbeiten aber auch weitere Funktionen nutzen. Zudem ist ein Strukturvorschlag gegeben, dieser muss aber nicht unbedingt eingehalten werden. Wichtig ist, dass die Dokumentation klar und verständlich ist und die relevanten Files auch als Link eingebunden werden.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDas repository ist als pdm-Projekt strukturiert. Nutzen Sie pdm install, um die Abhängigkeiten zu installieren.\nFür Dokumentation wurde Quarto verwendet, die quarto-cli-Befehle sind ebenfalls in der pdm-Umgebung verfügbar.\n\nFühren Sie quarto preview im docs-Verzeichnis aus, um die Dokumentation lokal zu starten.\nZudem existiert eine github-action zur automatischen Erstellung der Dokumentation, die diese auch automatisch als Website bereitstellt, wenn Sie in den Main-Branch pushen. Wenn sie diese entfernen wollen, müssen sie die Datei .github/workflows/publish.yml anpassen.\n\n\n\n\n\ndocs/: Quarto Dokumentation\ndocs/iot-specs: Spezifikationen für IoT-Geräte\ndocs/images: Bilder für die Dokumentation\nsrc/esp32_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/raspi_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/cloud: Quellcode mit Ansätzen für die Cloud-Entwicklung\ntests/: Tests für den Quellcode"
-  },
-  {
-    "objectID": "docs/Dokumentation.html#anleitung-für-developer",
-    "href": "docs/Dokumentation.html#anleitung-für-developer",
-    "title": "Dokumentation",
-    "section": "",
-    "text": "Das repository ist als pdm-Projekt strukturiert. Nutzen Sie pdm install, um die Abhängigkeiten zu installieren.\nFür Dokumentation wurde Quarto verwendet, die quarto-cli-Befehle sind ebenfalls in der pdm-Umgebung verfügbar.\n\nFühren Sie quarto preview im docs-Verzeichnis aus, um die Dokumentation lokal zu starten.\nZudem existiert eine github-action zur automatischen Erstellung der Dokumentation, die diese auch automatisch als Website bereitstellt, wenn Sie in den Main-Branch pushen. Wenn sie diese entfernen wollen, müssen sie die Datei .github/workflows/publish.yml anpassen.\n\n\n\n\n\ndocs/: Quarto Dokumentation\ndocs/iot-specs: Spezifikationen für IoT-Geräte\ndocs/images: Bilder für die Dokumentation\nsrc/esp32_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/raspi_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/cloud: Quellcode mit Ansätzen für die Cloud-Entwicklung\ntests/: Tests für den Quellcode"
-  },
-  {
     "objectID": "docs/iot-specs/conventions.html",
     "href": "docs/iot-specs/conventions.html",
     "title": "MQTT & Daten-Konventionen",
@@ -152,5 +89,68 @@
     "title": "MQTT & Daten-Konventionen",
     "section": "Endpunkte",
     "text": "Endpunkte\n\n/config\n\nGET: Gibt aktuelle Konfiguration zurück.\nPOST: Setzt neue Konfiguration.\n\n\n\nBeispiel GET /config Response\n```json { “sendInterval”: 60, “deviceName”: “sensor-node-01” }"
+  },
+  {
+    "objectID": "docs/Termin_1_Grundkonzepte_IoT.html",
+    "href": "docs/Termin_1_Grundkonzepte_IoT.html",
+    "title": "Synchron",
+    "section": "",
+    "text": "Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor.\nErstellen Sie einen Fork von diesem Git-Repository und laden Sie jhumci ein\nVerbinden Sie den Sensor mit dem Microcontroller und lesen Sie die Sensordaten indem Sie die code.py anpassen. Für den ersten Schritt können sie auch ein einfaches Skript ohne konfigurationsdatei schreiben.\nImplementieren Sie eine Lösung, die die Spezifikation in den Dateien conventions.md und asyncapi.yaml erfüllt.\nÜberprüfen Sie mittels MQTT Explorer ob Ihre MQTT-Nachrichten korrekt gesendet und empfangen werden.\nRefactoren Sie Ihren Code, um die Lesbarkeit und Wartbarkeit zu verbessern. Legen Sie dazu eine Konfigurationsdatei settings.toml an und definieren Sie sinnvoller Klassen in ihrer Firmware."
+  },
+  {
+    "objectID": "docs/Termin_1_Grundkonzepte_IoT.html#vorstellung-der-aufgabenstellung",
+    "href": "docs/Termin_1_Grundkonzepte_IoT.html#vorstellung-der-aufgabenstellung",
+    "title": "Synchron",
+    "section": "",
+    "text": "Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor.\nErstellen Sie einen Fork von diesem Git-Repository und laden Sie jhumci ein\nVerbinden Sie den Sensor mit dem Microcontroller und lesen Sie die Sensordaten indem Sie die code.py anpassen. Für den ersten Schritt können sie auch ein einfaches Skript ohne konfigurationsdatei schreiben.\nImplementieren Sie eine Lösung, die die Spezifikation in den Dateien conventions.md und asyncapi.yaml erfüllt.\nÜberprüfen Sie mittels MQTT Explorer ob Ihre MQTT-Nachrichten korrekt gesendet und empfangen werden.\nRefactoren Sie Ihren Code, um die Lesbarkeit und Wartbarkeit zu verbessern. Legen Sie dazu eine Konfigurationsdatei settings.toml an und definieren Sie sinnvoller Klassen in ihrer Firmware."
+  },
+  {
+    "objectID": "docs/Materialien.html",
+    "href": "docs/Materialien.html",
+    "title": "Materialen",
+    "section": "",
+    "text": "Materialen\nSie erhalten in der ersten Sitzung die folgenden Materialien ausgehändigt:\n\nRaspberry Pi Pico W\nTemperatursensor\nKabel\nUSB-Micro-B-Kabel (bei Bedarf)\n\nBitte geben Sie diese nach Ende des Semesters unaufgefordert zurück, erst dann wird die Note freigegeben.\nDer Einsatz anderer Hardware kann mit der Lehrveranstaltungsleitung abgesprochen werden."
+  },
+  {
+    "objectID": "docs/Dokumentation.html",
+    "href": "docs/Dokumentation.html",
+    "title": "Dokumentation",
+    "section": "",
+    "text": "Hinweis\n\n\n\nHier ist Platz für ihre Dokumentation. Dieses Dokument ist in Quarto geschrieben und wird automatisch in HTML umgewandelt. Da Quarto ein Superset von Markdown ist, können Sie einfach wie gewohnt arbeiten aber auch weitere Funktionen nutzen. Zudem ist ein Strukturvorschlag gegeben, dieser muss aber nicht unbedingt eingehalten werden. Wichtig ist, dass die Dokumentation klar und verständlich ist und die relevanten Files auch als Link eingebunden werden.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDas repository ist als pdm-Projekt strukturiert. Nutzen Sie pdm install, um die Abhängigkeiten zu installieren.\nFür Dokumentation wurde Quarto verwendet, die quarto-cli-Befehle sind ebenfalls in der pdm-Umgebung verfügbar.\n\nFühren Sie quarto preview im docs-Verzeichnis aus, um die Dokumentation lokal zu starten.\nZudem existiert eine github-action zur automatischen Erstellung der Dokumentation, die diese auch automatisch als Website bereitstellt, wenn Sie in den Main-Branch pushen. Wenn sie diese entfernen wollen, müssen sie die Datei .github/workflows/publish.yml anpassen.\n\n\n\n\n\ndocs/: Quarto Dokumentation\ndocs/iot-specs: Spezifikationen für IoT-Geräte\ndocs/images: Bilder für die Dokumentation\nsrc/esp32_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/raspi_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/cloud: Quellcode mit Ansätzen für die Cloud-Entwicklung\ntests/: Tests für den Quellcode"
+  },
+  {
+    "objectID": "docs/Dokumentation.html#anleitung-für-developer",
+    "href": "docs/Dokumentation.html#anleitung-für-developer",
+    "title": "Dokumentation",
+    "section": "",
+    "text": "Das repository ist als pdm-Projekt strukturiert. Nutzen Sie pdm install, um die Abhängigkeiten zu installieren.\nFür Dokumentation wurde Quarto verwendet, die quarto-cli-Befehle sind ebenfalls in der pdm-Umgebung verfügbar.\n\nFühren Sie quarto preview im docs-Verzeichnis aus, um die Dokumentation lokal zu starten.\nZudem existiert eine github-action zur automatischen Erstellung der Dokumentation, die diese auch automatisch als Website bereitstellt, wenn Sie in den Main-Branch pushen. Wenn sie diese entfernen wollen, müssen sie die Datei .github/workflows/publish.yml anpassen.\n\n\n\n\n\ndocs/: Quarto Dokumentation\ndocs/iot-specs: Spezifikationen für IoT-Geräte\ndocs/images: Bilder für die Dokumentation\nsrc/esp32_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/raspi_firmware: Quellcode mit Ansätzen für die Firmware-Entwicklung\nsrc/cloud: Quellcode mit Ansätzen für die Cloud-Entwicklung\ntests/: Tests für den Quellcode"
+  },
+  {
+    "objectID": "docs/Termin_2_Netzwerke.html",
+    "href": "docs/Termin_2_Netzwerke.html",
+    "title": "Synchron",
+    "section": "",
+    "text": "Die Netzwerkkonfiguration (z.B. WLAN-Zugangsdaten) wird über eine Konfig-Datei settings.toml bereitgestellt, die der Microcontroller beim Start einliest.\nDer Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt):\n\n/config (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).\n/status (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendeten Werte, Verbindungsstatus, Uptime).\n\nEinigen sie sich in der Gesamtgruppe auf die HTTP-API, welche alle Sensoren unterstützen müssen und legen Sie alles fest bis vor dem 3. Synchron-Termin.\nDie Schnittstellen sind in der OpenAPI Specification dokumentiert siehe openapi.yaml und conventions.md.\nEs stehen Testfälle zur Verfügung, um die Funktionalität der HTTP-API zu überprüfen. Ob Sie diese Testfälle mittels eines Test-Frameworks hat Auswirkung auf die Bewertung: (z.B. REST Client in VSCode (befriedigend)), unittest in Python (gut),oder das OpenAPI-Tooling (z.B. Swagger Codegen) nutzen (sehr gut), bleibt Ihnen überlassen. Wie die Testfälle genutzt werden, sollte in der Dokumentation beschrieben sein.\nGehen Sie davon aus, dass die an allen Standorten Zugriff auf ein WLan haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie ein kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie ihre Geräte in das Netzwerk integrieren damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen."
+  },
+  {
+    "objectID": "docs/Termin_2_Netzwerke.html#vorstellung-der-aufgabenstellung",
+    "href": "docs/Termin_2_Netzwerke.html#vorstellung-der-aufgabenstellung",
+    "title": "Synchron",
+    "section": "",
+    "text": "Die Netzwerkkonfiguration (z.B. WLAN-Zugangsdaten) wird über eine Konfig-Datei settings.toml bereitgestellt, die der Microcontroller beim Start einliest.\nDer Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt):\n\n/config (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).\n/status (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendeten Werte, Verbindungsstatus, Uptime).\n\nEinigen sie sich in der Gesamtgruppe auf die HTTP-API, welche alle Sensoren unterstützen müssen und legen Sie alles fest bis vor dem 3. Synchron-Termin.\nDie Schnittstellen sind in der OpenAPI Specification dokumentiert siehe openapi.yaml und conventions.md.\nEs stehen Testfälle zur Verfügung, um die Funktionalität der HTTP-API zu überprüfen. Ob Sie diese Testfälle mittels eines Test-Frameworks hat Auswirkung auf die Bewertung: (z.B. REST Client in VSCode (befriedigend)), unittest in Python (gut),oder das OpenAPI-Tooling (z.B. Swagger Codegen) nutzen (sehr gut), bleibt Ihnen überlassen. Wie die Testfälle genutzt werden, sollte in der Dokumentation beschrieben sein.\nGehen Sie davon aus, dass die an allen Standorten Zugriff auf ein WLan haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie ein kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie ihre Geräte in das Netzwerk integrieren damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen."
+  },
+  {
+    "objectID": "docs/Termin_3_Cloud.html",
+    "href": "docs/Termin_3_Cloud.html",
+    "title": "Synchron",
+    "section": "",
+    "text": "Cloud Computing und Virtualisierung\nSecurity und Safety\n\n\n\n\nSie bereiten eine containerisierte Lösung vor, die sowohl eine Datenbank (z.B. InfluxDB, SQLite, Arrow etc.) als auch eine Visualisierungskomponente (z.B. Grafana, etc.) beinhaltet. Bei der Auswahl der Technologien sind Sie frei, achten Sie jedoch darauf, dass die Lösung ressourcenschonend ist und auf einem typischen Laptop ausgeführt werden kann.\nDie Lösung soll so gestaltet sein, dass sie mit minimalen Aufwand gestartet werden kann (z.B. über ein docker-compose.yml Datei).\nDie Lösung soll die Daten aller verbundenen Sensoren speichern und auch offen für zukünftige Sensoren sein und diese ohne zusätzlichen Konfigurationsaufwand integrieren.\nNeben der Visualisierung der Zeitreihen-Daten, soll die Lösung auch eine übersicht über die verbundenen Sensoren bieten (z.B. Anzahl der Sensoren, letzte Verbindung, etc.).\nBearbeiten sie die Dokumentation so auf, dass ein Nutzer die Anpassung der Config den Mikrocontroller in ein bestehendes WLAN einbinden kann und die kontainersierte Lösung starten und nutzen kann."
+  },
+  {
+    "objectID": "docs/Termin_3_Cloud.html#vorstellung-der-aufgabenstellung",
+    "href": "docs/Termin_3_Cloud.html#vorstellung-der-aufgabenstellung",
+    "title": "Synchron",
+    "section": "",
+    "text": "Sie bereiten eine containerisierte Lösung vor, die sowohl eine Datenbank (z.B. InfluxDB, SQLite, Arrow etc.) als auch eine Visualisierungskomponente (z.B. Grafana, etc.) beinhaltet. Bei der Auswahl der Technologien sind Sie frei, achten Sie jedoch darauf, dass die Lösung ressourcenschonend ist und auf einem typischen Laptop ausgeführt werden kann.\nDie Lösung soll so gestaltet sein, dass sie mit minimalen Aufwand gestartet werden kann (z.B. über ein docker-compose.yml Datei).\nDie Lösung soll die Daten aller verbundenen Sensoren speichern und auch offen für zukünftige Sensoren sein und diese ohne zusätzlichen Konfigurationsaufwand integrieren.\nNeben der Visualisierung der Zeitreihen-Daten, soll die Lösung auch eine übersicht über die verbundenen Sensoren bieten (z.B. Anzahl der Sensoren, letzte Verbindung, etc.).\nBearbeiten sie die Dokumentation so auf, dass ein Nutzer die Anpassung der Config den Mikrocontroller in ein bestehendes WLAN einbinden kann und die kontainersierte Lösung starten und nutzen kann."
   }
 ]
