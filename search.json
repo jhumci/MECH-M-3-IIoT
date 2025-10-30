@@ -18,7 +18,7 @@
     "href": "docs/Materialien.html",
     "title": "Materialen",
     "section": "",
-    "text": "Materialen\nSie erhalten in der ersten Sitzung die folgenden Materialien ausgehändigt:\n\nRaspberry Pi Pico W\nTemperatursensor\nKabel\nUSB-Micro-B-Kabel (bei Bedarf)\n\nBitte geben Sie diese nach Ende des Semesters unaufgefordert zurück, erst dann wird die Note freigegeben.\nDer Einsatz anderer Hardware kann mit der Lehrveranstaltungsleitung abgesprochen werden."
+    "text": "Materialen\nSie erhalten in der ersten Sitzung die folgenden Materialien ausgehändigt:\n\nRaspberry Pi Pico W oder ESP32\nTemperatursensor DHT11\nKabel\nUSB-Micro-B-Kabel (bei Bedarf)\n\nBitte geben Sie diese nach Ende des Semesters unaufgefordert zurück, erst dann wird die Note freigegeben.\nDer Einsatz anderer Hardware kann mit der Lehrveranstaltungsleitung abgesprochen werden."
   },
   {
     "objectID": "docs/Termin_1_Grundkonzepte_IoT.html",
