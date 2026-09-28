@@ -139,7 +139,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#materialen" id="toc-materialen" class="nav-link active" data-scroll-target="#materialen">Materialen</a></li>
+  <li><a href="#materialien" id="toc-materialien" class="nav-link active" data-scroll-target="#materialien">Materialien</a></li>
+  <li><a href="#aufbau-der-hardware" id="toc-aufbau-der-hardware" class="nav-link" data-scroll-target="#aufbau-der-hardware">Aufbau der Hardware</a>
+  <ul class="collapse">
+  <li><a href="#schritt-für-schritt" id="toc-schritt-für-schritt" class="nav-link" data-scroll-target="#schritt-für-schritt">Schritt für Schritt</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jhumci/MECH-M-3-IIoT/edit/main/docs/Materialien.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/jhumci/MECH-M-3-IIoT/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -149,19 +153,135 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="materialen" class="level1">
-<h1>Materialen</h1>
+<section id="materialien" class="level1">
+<h1>Materialien</h1>
 <p>Sie erhalten in der ersten Sitzung die folgenden Materialien ausgehändigt:</p>
-<ul>
-<li>Raspberry Pi Pico W oder ESP32</li>
-<li>Temperatursensor DHT11</li>
-<li>Kabel</li>
-<li>USB-Micro-B-Kabel (bei Bedarf)</li>
-</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Anzahl</th>
+<th>Bauteil</th>
+<th>Hinweis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Raspberry Pi Pico W (oder ESP32)</td>
+<td>Mikrocontroller mit WLAN</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Temperatursensor DHT11</td>
+<td>Temperatur und Luftfeuchtigkeit, 4 Pins</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>Widerstand 10 kΩ</td>
+<td>Pull-up für die Datenleitung (Farbringe braun-schwarz-orange)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Steckbrett (Breadboard)</td>
+<td>für den Aufbau ohne Löten</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Steckkabel (Jumper Wires)</td>
+<td>idealerweise rot, gelb/grün, schwarz</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>USB-Micro-B-Kabel (bei Bedarf)</td>
+<td>Stromversorgung und Programmierung</td>
+</tr>
+</tbody>
+</table>
 <p>Bitte geben Sie diese nach Ende des Semesters unaufgefordert zurück, erst dann wird die Note freigegeben.</p>
 <p>Der Einsatz anderer Hardware kann mit der Lehrveranstaltungsleitung abgesprochen werden.</p>
+</section>
+<section id="aufbau-der-hardware" class="level1">
+<h1>Aufbau der Hardware</h1>
+<p>Der DHT11 wird mit drei Leitungen an den Pico W angeschlossen: Versorgungsspannung (3,3 V), Masse (GND) und eine Datenleitung. Der 10 kΩ-Widerstand verbindet die Datenleitung mit 3,3 V (Pull-up), damit die Leitung im Ruhezustand einen definierten Pegel hat.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pico_dht11_wiring.svg" class="img-fluid figure-img"></p>
+<figcaption>Verdrahtung Raspberry Pi Pico W mit DHT11</figcaption>
+</figure>
+</div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Pico W</th>
+<th></th>
+<th>DHT11</th>
+<th>Kabel</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Pin 36 – 3V3(OUT)</td>
+<td>→</td>
+<td>Pin 1 – VCC</td>
+<td>rot</td>
+</tr>
+<tr class="even">
+<td>Pin 29 – GP22</td>
+<td>→</td>
+<td>Pin 2 – DATA</td>
+<td>gelb</td>
+</tr>
+<tr class="odd">
+<td>–</td>
+<td></td>
+<td>Pin 3 – NC (nicht verbunden)</td>
+<td>–</td>
+</tr>
+<tr class="even">
+<td>Pin 28 – GND</td>
+<td>→</td>
+<td>Pin 4 – GND</td>
+<td>schwarz</td>
+</tr>
+</tbody>
+</table>
+<p>Zusätzlich: <strong>10 kΩ-Widerstand</strong> zwischen DHT11 Pin 1 (VCC) und Pin 2 (DATA).</p>
+<section id="schritt-für-schritt" class="level3">
+<h3 class="anchored" data-anchor-id="schritt-für-schritt">Schritt für Schritt</h3>
+<ol type="1">
+<li><strong>USB-Kabel abstecken.</strong> Verdrahten Sie immer im stromlosen Zustand.</li>
+<li><strong>DHT11 einstecken.</strong> Stecken Sie den Sensor so in das Steckbrett, dass jeder der vier Pins in einer eigenen Reihe steckt. Pin 1 ist der linke Pin, wenn das Gitter zu Ihnen zeigt und die Pins nach unten zeigen.</li>
+<li><strong>Widerstand einstecken.</strong> Verbinden Sie mit dem Widerstand die Reihe von Pin 1 (VCC) mit der Reihe von Pin 2 (DATA). Die Einbaurichtung ist beim Widerstand egal.</li>
+<li><strong>Kabel stecken.</strong> Verbinden Sie die Pins des Pico W mit den Reihen des Sensors wie in der Tabelle angegeben. Die Pin-Nummern finden Sie im <a href="images/raspberry_pi_Pico-R3-Pinout-narrow.png">Pinout</a>, Pin 1 ist neben dem USB-Anschluss markiert.</li>
+<li><strong>Kontrolle.</strong> Prüfen Sie vor dem Einstecken des USB-Kabels, dass 3,3 V und GND nicht vertauscht sind. Ein falsch gepolter Sensor kann heiß werden und kaputtgehen.</li>
+<li><strong>In der Konfiguration eintragen.</strong> Der Datenpin wird in der <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/settings.toml"><code>settings.toml</code></a> als <code>sensor_pin = 22</code> angegeben.</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Hinweise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Steckbrett:</strong> Die fünf Löcher einer Reihe (a–e) sind im Inneren leitend verbunden. Was in derselben Reihe steckt, ist also miteinander verbunden.</li>
+<li><strong>DHT11 als Modul:</strong> Manche DHT11 sind auf einer kleinen Platine mit nur drei Pins verbaut. Dort ist der Pull-up-Widerstand bereits eingebaut und die Pin-Reihenfolge ist aufgedruckt (z.B. <code>+</code>, <code>out</code>, <code>-</code>). Der zusätzliche Widerstand entfällt dann.</li>
+<li><strong>ESP32:</strong> Der Aufbau ist identisch (3V3, GND, Datenpin). Die ESP32-Vorlage nutzt GPIO 4 als Datenpin (<code>DHT_SENSOR_PIN</code> in <code>src/esp32_firmware/src/sensors/my_sensor.h</code>).</li>
+<li><strong>Keine Messwerte?</strong> Der DHT11 liefert höchstens alle 1–2 Sekunden einen neuen Wert. Häufiges Auslesen führt zu Fehlern.</li>
+</ul>
+</div>
+</div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
