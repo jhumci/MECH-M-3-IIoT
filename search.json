@@ -102,14 +102,14 @@
     "href": "docs/iot-specs/conventions.html",
     "title": "MQTT & Daten-Konventionen",
     "section": "",
-    "text": "Struktur: iiot/group/{nachname1-nachname2-nachname3}/sensor/temperature/state\nNur Kleinbuchstaben und / als Trenner\nBeispiel: iiot/group/mustermann-meier-schmidt/sensor/temperature/state\n\n\n\n\n\nStandardformat: JSON\nZeitstempel immer in UTC, ISO8601 (2025-08-28T10:00:00Z)\nEinheit als String (z. B. \"°C\")\nStatuswerte: ok, error, offline\n\n\n\n\n\nHost: 158.180.44.197 (privater Kurs-Broker)\nPort: 1883\nUsername: bobm\nPassword: In Vorlesung erfragen\nSSL/TLS: False\nClient-ID: Nach eigener Konfiguration\nMQTT-Version: 5.0"
+    "text": "Struktur: iiot/group/{nachname1-nachname2-nachname3}/sensor/temperature/state\nNur Kleinbuchstaben und / als Trenner\nBeispiel: iiot/group/mustermann-meier-schmidt/sensor/temperature/state\nGerätestatus: iiot/group/{nachname1-nachname2-nachname3}/status (retained, Last Will = offline)\n\n\n\n\n\nStandardformat: JSON\nZeitstempel immer in UTC, ISO8601 (2025-08-28T10:00:00Z)\nEinheit als String (z. B. \"°C\")\nStatuswerte: ok, error, offline\n\n\n\n\n\nHost: 158.180.44.197 (privater Kurs-Broker)\nPort: 1883\nUsername: bobm\nPassword: In Vorlesung erfragen\nSSL/TLS: False\nClient-ID: Nach eigener Konfiguration\nMQTT-Version: 5.0"
   },
   {
     "objectID": "docs/iot-specs/conventions.html#topics",
     "href": "docs/iot-specs/conventions.html#topics",
     "title": "MQTT & Daten-Konventionen",
     "section": "",
-    "text": "Struktur: iiot/group/{nachname1-nachname2-nachname3}/sensor/temperature/state\nNur Kleinbuchstaben und / als Trenner\nBeispiel: iiot/group/mustermann-meier-schmidt/sensor/temperature/state"
+    "text": "Struktur: iiot/group/{nachname1-nachname2-nachname3}/sensor/temperature/state\nNur Kleinbuchstaben und / als Trenner\nBeispiel: iiot/group/mustermann-meier-schmidt/sensor/temperature/state\nGerätestatus: iiot/group/{nachname1-nachname2-nachname3}/status (retained, Last Will = offline)"
   },
   {
     "objectID": "docs/iot-specs/conventions.html#payload",
