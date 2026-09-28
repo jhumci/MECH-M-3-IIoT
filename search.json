@@ -130,7 +130,7 @@
     "href": "docs/iot-specs/conventions.html#endpunkte",
     "title": "MQTT & Daten-Konventionen",
     "section": "Endpunkte",
-    "text": "Endpunkte\n\n/config\n\nGET: Gibt aktuelle Konfiguration zurück.\nPOST: Setzt neue Konfiguration.\n\n\n\nBeispiel GET /config Response\n```json { “sendInterval”: 60, “deviceName”: “sensor-node-01” }"
+    "text": "Endpunkte\n\n/config\n\nGET: Gibt aktuelle Konfiguration zurück.\nPOST: Setzt neue Konfiguration.\n\n\n\nBeispiel GET /config Response\nDie Feldnamen entsprechen den Schlüsseln in settings.toml.\n{\n  \"device_id\": \"yourmuesli-innsbruck-01\",\n  \"reading_interval_seconds\": 60\n}\nWeitere Felder sowie der Endpunkt /status werden in der Gesamtgruppe festgelegt und in openapi.yaml ergänzt."
   },
   {
     "objectID": "docs/Termin_1_Grundkonzepte_IoT.html",
