@@ -26,6 +26,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -144,7 +179,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#netzwerke" id="toc-netzwerke" class="nav-link" data-scroll-target="#netzwerke">Netzwerke</a></li>
   <li><a href="#kommunikations-architekturen-rest" id="toc-kommunikations-architekturen-rest" class="nav-link" data-scroll-target="#kommunikations-architekturen-rest">Kommunikations-Architekturen (REST)</a></li>
   <li><a href="#firewalls" id="toc-firewalls" class="nav-link" data-scroll-target="#firewalls">Firewalls</a></li>
-  <li><a href="#vorstellung-der-aufgabenstellung" id="toc-vorstellung-der-aufgabenstellung" class="nav-link" data-scroll-target="#vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</a></li>
+  <li><a href="#vorstellung-der-aufgabenstellung" id="toc-vorstellung-der-aufgabenstellung" class="nav-link" data-scroll-target="#vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</a>
+  <ul class="collapse">
+  <li><a href="#vorgehen" id="toc-vorgehen" class="nav-link" data-scroll-target="#vorgehen">Vorgehen</a></li>
+  <li><a href="#hinweise-zu-den-schwierigen-stellen" id="toc-hinweise-zu-den-schwierigen-stellen" class="nav-link" data-scroll-target="#hinweise-zu-den-schwierigen-stellen">Hinweise zu den schwierigen Stellen</a></li>
+  <li><a href="#was-die-it-abteilung-wissen-muss" id="toc-was-die-it-abteilung-wissen-muss" class="nav-link" data-scroll-target="#was-die-it-abteilung-wissen-muss">Was die IT-Abteilung wissen muss</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#asynchrone-inhalte" id="toc-asynchrone-inhalte" class="nav-link" data-scroll-target="#asynchrone-inhalte">Asynchrone Inhalte</a></li>
   </ul>
@@ -171,21 +211,86 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</h2>
 <ul class="task-list">
 <li><label><input type="checkbox">Die Netzwerkkonfiguration (z.B. WLAN-Zugangsdaten) wird über eine Konfig-Datei <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/settings.toml"><code>settings.toml</code></a> bereitgestellt, die der Microcontroller beim Start einliest.</label></li>
-<li><label><input type="checkbox">Der Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt):</label>
+<li><label><input type="checkbox">Der Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt), die JSON senden und empfangen:</label>
 <ul>
 <li><code>/config</code> (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).</li>
-<li><code>/status</code> (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendeten Werte, Verbindungsstatus, Uptime).</li>
+<li><code>/status</code> (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendete Werte, Verbindungsstatus, Uptime).</li>
 </ul></li>
-<li><label><input type="checkbox">Einigen sie sich in der Gesamtgruppe auf die HTTP-API, welche alle Sensoren unterstützen müssen und legen Sie alles fest <strong>bis vor dem 3. Synchron-Termin</strong>.</label></li>
-<li><label><input type="checkbox">Die Schnittstellen sind in der OpenAPI Specification dokumentiert siehe <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/openapi.yaml"><code>openapi.yaml</code></a> und <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md"><code>conventions.md</code></a>.</label></li>
-<li><label><input type="checkbox">Es stehen Testfälle zur Verfügung, um die Funktionalität der HTTP-API zu überprüfen. Ob Sie diese Testfälle mittels eines Test-Frameworks hat Auswirkung auf die Bewertung: (z.B. <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">REST Client</a> in VSCode (<em>befriedigend</em>)), <code>unittest</code> in Python (<em>gut</em>),oder das OpenAPI-Tooling (z.B. <a href="https://swagger.io/tools/swagger-codegen/">Swagger Codegen</a>) nutzen (<em>sehr gut</em>), bleibt Ihnen überlassen. Wie die Testfälle genutzt werden, sollte in der Dokumentation beschrieben sein.</label></li>
-<li><label><input type="checkbox">Gehen Sie davon aus, dass die an allen Standorten Zugriff auf ein WLan haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie ein kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie ihre Geräte in das Netzwerk integrieren damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen.</label></li>
+<li><label><input type="checkbox">Die Schnittstellen sind in der OpenAPI Specification dokumentiert, siehe <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/openapi.yaml"><code>openapi.yaml</code></a> und <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md"><code>conventions.md</code></a>. Dort ist bisher nur <code>/config</code> beschrieben.</label></li>
+<li><label><input type="checkbox">Einigen Sie sich in der Gesamtgruppe auf die Felder von <code>/status</code> und auf alle weiteren Felder von <code>/config</code>, die alle Sensoren unterstützen müssen, <strong>bis vor dem 3. Synchron-Termin</strong>. Vorgehen: Eine Gruppe stellt einen Pull Request gegen <code>docs/iot-specs/openapi.yaml</code> im Original-Repository mit einem Vorschlag. Die anderen Gruppen kommentieren dort. Was vor dem 3. Termin gemerged ist, gilt für alle.</label></li>
+<li><label><input type="checkbox">Schreiben Sie Testfälle, mit denen sich die HTTP-API Ihres Geräts überprüfen lässt, und legen Sie diese im Repository ab (z.B. unter <code>tests/</code>). Welches Werkzeug Sie dafür verwenden, hat Auswirkung auf die Bewertung: <a href="https://marketplace.visualstudio.com/items?itemName=humao.rest-client">REST Client</a> in VS Code (<em>befriedigend</em>), <code>unittest</code> oder <code>pytest</code> in Python (<em>gut</em>), oder das OpenAPI-Tooling, z.B. <a href="https://schemathesis.readthedocs.io/">Schemathesis</a> oder <a href="https://swagger.io/tools/swagger-codegen/">Swagger Codegen</a> (<em>sehr gut</em>). Wie die Testfälle ausgeführt werden, sollte in der Dokumentation beschrieben sein.</label></li>
+<li><label><input type="checkbox">Gehen Sie davon aus, dass Sie an allen Standorten Zugriff auf ein WLAN haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie einen kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie Ihre Geräte in das Netzwerk integriert, damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie Sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen.</label></li>
 </ul>
+<section id="vorgehen" class="level3">
+<h3 class="anchored" data-anchor-id="vorgehen">Vorgehen</h3>
+<p>Bauen Sie die HTTP-Schnittstelle in dieser Reihenfolge auf und testen Sie jeden Schritt von Ihrem Laptop aus, bevor Sie den nächsten beginnen. Laptop und Pico müssen dazu im selben WLAN sein.</p>
+<ol type="1">
+<li><p><strong>Ein fester Text auf <code>GET /</code>.</strong> Der Server nimmt eine Verbindung an, liest die Anfrage, antwortet mit <code>HTTP/1.1 200 OK</code>, einer Leerzeile und einem beliebigen Text. Das prüfen Sie mit <code>curl</code>, das auf Windows, macOS und Linux vorinstalliert ist:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-v</span> http://<span class="op">&lt;</span>ip-des-pico<span class="op">&gt;</span>/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Mit <code>-v</code> sehen Sie die komplette Anfrage und Antwort, auch die Statuszeile und die Header.</p></li>
+<li><p><strong><code>GET /config</code> mit JSON.</strong> Wert aus der geladenen Konfiguration nehmen, mit <code>json.dumps()</code> in einen String verwandeln, <code>Content-Type: application/json</code> setzen.</p></li>
+<li><p><strong><code>POST /config</code>.</strong> Den JSON-Body aus der Anfrage lesen, mit <code>json.loads()</code> parsen, Werte übernehmen. Test:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-v</span> <span class="at">-X</span> POST http://<span class="op">&lt;</span>ip-des-pico<span class="op">&gt;</span>/config <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">-d</span> <span class="st">'{"reading_interval_seconds": 10}'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Danach <code>GET /config</code> erneut aufrufen: Der neue Wert muss zurückkommen, und der Sensor muss ab jetzt im neuen Intervall senden.</p></li>
+<li><p><strong><code>GET /status</code></strong> nach dem Schema, das in der Gesamtgruppe vereinbart wurde.</p></li>
+<li><p><strong>Falsche Anfragen.</strong> Unbekannter Pfad, falsche Methode, kaputtes JSON: Der Server antwortet mit dem passenden Statuscode (404, 405, 400) und läuft weiter, statt abzustürzen.</p></li>
+<li><p><strong>Testfälle</strong> aus den <code>curl</code>-Aufrufen ableiten und im gewählten Werkzeug festhalten.</p></li>
+</ol>
+<p>Sie können den Server mit <code>socketpool</code> selbst schreiben oder die Bibliothek <a href="https://docs.circuitpython.org/projects/httpserver/en/latest/"><code>adafruit_httpserver</code></a> aus dem Bundle verwenden, die Routen, JSON-Antworten und Statuscodes bereits kennt. Beides ist zulässig. Der eigene Server ist lehrreicher, die Bibliothek nimmt Ihnen die unten beschriebenen Stolpersteine ab.</p>
+</section>
+<section id="hinweise-zu-den-schwierigen-stellen" class="level3">
+<h3 class="anchored" data-anchor-id="hinweise-zu-den-schwierigen-stellen">Hinweise zu den schwierigen Stellen</h3>
+<ul>
+<li><strong>Die Hauptschleife darf nie blockieren.</strong> Ihr Programm bedient MQTT, den Sensor und den Webserver in einer einzigen Schleife. Wartet ein Teil, stehen alle anderen. Zwei typische Bremsen: <code>accept()</code> wartet standardmäßig, bis ein Browser anklopft (Stichwort <code>setblocking(False)</code>), und <code>loop()</code> von MiniMQTT wartet standardmäßig bis zu einer Sekunde auf eingehende Nachrichten (Stichwort: Parameter <code>timeout</code>, und wie oft der Aufruf wirklich nötig ist, wenn Sie nichts abonniert haben).</li>
+<li><strong>Port 80 ist nach einem Neustart noch belegt.</strong> Speichern Sie eine Datei, startet <code>code.py</code> neu, aber der alte Socket ist im WLAN-Modul noch nicht freigegeben. <code>bind()</code> schlägt dann mit <code>EADDRINUSE</code> fehl. Stichworte: <code>SO_REUSEADDR</code>, oder das Starten des Servers bei Fehler einige Sekunden später erneut versuchen, statt aufzugeben.</li>
+<li><strong>Die Anfrage kommt nicht in einem Stück.</strong> Ein <code>recv()</code> liefert nicht zwingend die ganze Anfrage. Der Header <code>Content-Length</code> sagt Ihnen, wie viele Bytes Body Sie noch erwarten müssen. Der Body beginnt nach der ersten Leerzeile (<code>\r\n\r\n</code>).</li>
+<li><strong>Schreibschutz.</strong> Solange der Pico per USB am Laptop hängt, darf CircuitPython nicht auf sein eigenes Laufwerk schreiben. Das Speichern der <code>settings.toml</code> aus <code>POST /config</code> scheitert dann mit einem <code>OSError</code>. Die Hinweise dazu stehen im Docstring von <code>ConfigManager.save_settings()</code> in der Vorlage. Für die Bewertung reicht es, wenn die neue Konfiguration im laufenden Betrieb übernommen wird und ein Fehler beim Speichern sauber gemeldet wird; das dauerhafte Speichern per <code>boot.py</code> ist ein Plus.</li>
+<li><strong>Dienst aus dem Browser prüfen.</strong> Ein Browser schickt bei jedem Aufruf zusätzlich <code>GET /favicon.ico</code>. Wenn Ihr Server darauf abstürzt, sehen Sie das nur in der seriellen Konsole.</li>
+</ul>
+</section>
+<section id="was-die-it-abteilung-wissen-muss" class="level3">
+<h3 class="anchored" data-anchor-id="was-die-it-abteilung-wissen-muss">Was die IT-Abteilung wissen muss</h3>
+<p>Für den Absatz in der Dokumentation brauchen Sie die Fakten aus Ihrer eigenen Firmware. Notieren Sie, welche Verbindungen Ihr Gerät <strong>ausgehend</strong> aufbaut (Ziel, Port, Protokoll), z.B. zum Broker auf <code>158.180.44.197:1883</code> über TCP und, falls Sie NTP verwenden, zu einem Zeitserver über UDP 123. Notieren Sie außerdem, welche Verbindungen <strong>eingehend</strong> nötig sind (die HTTP-API auf Port 80, nur aus dem lokalen Netz). Daraus ergibt sich, was in der Whitelist stehen muss. Mit dem <a href="https://jhumci.github.io/2024_SoSe_IoT1/IoT_5_Netzwerke_Aufgaben/">Filius-Skript</a> können Sie eine solche Firewall im Simulator nachbauen.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Typische Probleme
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong><code>curl: (7) Connection refused</code></strong>: Der Server läuft nicht, z.B. weil <code>bind()</code> fehlgeschlagen ist. Serielle Konsole prüfen.</li>
+<li><strong><code>curl</code> hängt und läuft in einen Timeout</strong>: Der Server nimmt die Verbindung an, antwortet aber nicht. Meist blockiert etwas in der Hauptschleife, oder die Antwort wird gesendet, bevor die Anfrage vollständig gelesen wurde.</li>
+<li><strong>Antwort dauert über eine Sekunde</strong>: Siehe <em>Die Hauptschleife darf nie blockieren</em>.</li>
+<li><strong>Erste Anfrage geht, zweite nicht</strong>: Die Client-Verbindung wird nach der Antwort nicht geschlossen, oder eine Exception im Handler beendet die Schleife.</li>
+<li><strong>Laptop findet den Pico nicht</strong>: Anderes WLAN, oder das WLAN trennt Clients voneinander (Gäste-Netz, Client-Isolation). Ein Handy-Hotspot ist die einfachste Umgebung zum Testen.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="asynchrone-inhalte" class="level1">
 <h1>Asynchrone Inhalte</h1>
-<p>Mit folgenden Inhalten sollten Sie sich vertraut machen, um die Aufgabenstellung erfolgreich zu bearbeiten: - <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">HTTP Status Codes</a>: Eine Übersicht über die verschiedenen HTTP-Statuscodes und deren Bedeutung. - <a href="https://restfulapi.net/resource-naming/">RESTful API Resource Naming</a>: Empfehlungen zur Benennung von Ressourcen in RESTful APIs. - <a href="https://jhumci.github.io/2024_SoSe_IoT1/IoT_5_Netzwerke_Aufgaben/">Filius-Aufgaben</a>: Ein Netzwerk-Simulator, der es ermöglicht, Netzwerktopologien zu erstellen und zu testen. Nutzen Sie das Skript und bearbeiten Sie die Aufgaben 1-12, 21, 22 im Skriptum, um sich mit den Grundlagen von Netzwerken vertraut zu machen. - Machen Sie sich mit der <a href="https://de.wikipedia.org/wiki/OpenAPI">OpenAPI Specification</a></p>
+<p>Mit folgenden Inhalten sollten Sie sich vertraut machen, um die Aufgabenstellung erfolgreich zu bearbeiten:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status">HTTP Status Codes</a>: Eine Übersicht über die verschiedenen HTTP-Statuscodes und deren Bedeutung.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Messages">Aufbau einer HTTP-Nachricht</a>: Statuszeile, Header, Leerzeile, Body. Genau das muss Ihr Server lesen und schreiben.</li>
+<li><a href="https://everything.curl.dev/">Everything curl</a>: Nachschlagewerk für <code>curl</code>. Für den Einstieg reichen die Kapitel zu <code>-v</code>, <code>-X</code> und <code>-d</code>.</li>
+<li><a href="https://restfulapi.net/resource-naming/">RESTful API Resource Naming</a>: Empfehlungen zur Benennung von Ressourcen in RESTful APIs.</li>
+<li><a href="https://learn.openapis.org/">OpenAPI Specification</a>: Einführung in das Format von <code>openapi.yaml</code>. Mit dem <a href="https://editor.swagger.io/">Swagger Editor</a> können Sie die Datei prüfen und lesbar darstellen.</li>
+<li><a href="https://docs.circuitpython.org/en/latest/shared-bindings/socketpool/index.html"><code>socketpool</code> in CircuitPython</a>: Die Socket-API des Pico W, falls Sie den Server selbst schreiben.</li>
+<li><a href="https://docs.circuitpython.org/projects/httpserver/en/latest/"><code>adafruit_httpserver</code></a>: Die Alternative dazu, mit Beispielen für JSON-Antworten.</li>
+<li><a href="https://jhumci.github.io/2024_SoSe_IoT1/IoT_5_Netzwerke_Aufgaben/">Filius-Aufgaben</a>: Ein Netzwerk-Simulator, der es ermöglicht, Netzwerktopologien zu erstellen und zu testen. Nutzen Sie das Skript und bearbeiten Sie die Aufgaben 1-12, 21, 22 im Skriptum, um sich mit den Grundlagen von Netzwerken vertraut zu machen.</li>
+</ul>
 
 
 </section>

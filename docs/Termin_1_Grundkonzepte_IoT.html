@@ -144,7 +144,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#grundbegriffe" id="toc-grundbegriffe" class="nav-link" data-scroll-target="#grundbegriffe">Grundbegriffe</a></li>
   <li><a href="#kommunikations-architekturen-mqtt" id="toc-kommunikations-architekturen-mqtt" class="nav-link" data-scroll-target="#kommunikations-architekturen-mqtt">Kommunikations-Architekturen (MQTT)</a></li>
   <li><a href="#telemetrie" id="toc-telemetrie" class="nav-link" data-scroll-target="#telemetrie">Telemetrie</a></li>
-  <li><a href="#vorstellung-der-aufgabenstellung" id="toc-vorstellung-der-aufgabenstellung" class="nav-link" data-scroll-target="#vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</a></li>
+  <li><a href="#vorstellung-der-aufgabenstellung" id="toc-vorstellung-der-aufgabenstellung" class="nav-link" data-scroll-target="#vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</a>
+  <ul class="collapse">
+  <li><a href="#erste-schritte-mit-dem-pico-w" id="toc-erste-schritte-mit-dem-pico-w" class="nav-link" data-scroll-target="#erste-schritte-mit-dem-pico-w">Erste Schritte mit dem Pico W</a></li>
+  <li><a href="#meilensteine" id="toc-meilensteine" class="nav-link" data-scroll-target="#meilensteine">Meilensteine</a></li>
+  <li><a href="#hinweise-zu-den-schwierigen-stellen" id="toc-hinweise-zu-den-schwierigen-stellen" class="nav-link" data-scroll-target="#hinweise-zu-den-schwierigen-stellen">Hinweise zu den schwierigen Stellen</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#asynchrone-inhalte" id="toc-asynchrone-inhalte" class="nav-link" data-scroll-target="#asynchrone-inhalte">Asynchrone Inhalte</a></li>
   </ul>
@@ -172,28 +177,175 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="vorstellung-der-aufgabenstellung" class="level2">
 <h2 class="anchored" data-anchor-id="vorstellung-der-aufgabenstellung">Vorstellung der Aufgabenstellung</h2>
-<ul>
-<li>Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor.</li>
-<li><label><input type="checkbox">Erstellen Sie einen Fork von diesem <a href="https://github.com/jhumci/MECH-M-3-IIoT">Git-Repository</a> und laden Sie <code>Robo-Chris</code> ein</label></li>
-<li><label><input type="checkbox">Verbinden Sie den Sensor mit dem Microcontroller und lesen Sie die Sensordaten indem Sie die <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/code.py"><code>code.py</code></a> anpassen. Für den ersten Schritt können sie auch ein einfaches Skript ohne konfigurationsdatei schreiben.</label></li>
-<li><label><input type="checkbox">Implementieren Sie eine Lösung, die die Spezifikation in den Dateien <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md"><code>conventions.md</code></a> und <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/asyncapi.yaml">asyncapi.yaml</a> erfüllt.</label></li>
-<li><label><input type="checkbox">Überprüfen Sie mittels <a href="https://mqtt-explorer.com/">MQTT Explorer</a> ob Ihre MQTT-Nachrichten korrekt gesendet und empfangen werden.</label></li>
-<li><label><input type="checkbox">Refactoren Sie Ihren Code, um die Lesbarkeit und Wartbarkeit zu verbessern. Legen Sie dazu eine Konfigurationsdatei <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/settings.toml"><code>settings.toml</code></a> an und definieren Sie sinnvolle Klassen in ihrer Firmware.</label></li>
+<p>Jede Gruppe entwickelt mit einem eigenen Microcontroller und Sensor. Ziel des ersten Teils ist eine Firmware, die die Messwerte des DHT11 so an den Kurs-Broker sendet, wie es <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md"><code>conventions.md</code></a> und <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/asyncapi.yaml"><code>asyncapi.yaml</code></a> vorgeben.</p>
+<ul class="task-list">
+<li><label><input type="checkbox">Erstellen Sie einen Fork von diesem <a href="https://github.com/jhumci/MECH-M-3-IIoT">Git-Repository</a> und laden Sie <code>Robo-Chris</code> ein.</label></li>
+<li><label><input type="checkbox">Verkabeln Sie den Sensor wie unter <a href="../docs/Materialien.html">Materialien</a> beschrieben.</label></li>
+<li><label><input type="checkbox">Richten Sie den Pico W ein (siehe <em>Erste Schritte</em> unten) und arbeiten Sie die <em>Meilensteine</em> der Reihe nach ab. Für die ersten Meilensteine reicht ein einfaches Skript ohne Konfigurationsdatei und ohne Klassen.</label></li>
+<li><label><input type="checkbox">Überprüfen Sie mit dem <a href="https://mqtt-explorer.com/">MQTT Explorer</a>, ob Ihre Nachrichten auf dem richtigen Topic und im richtigen Format ankommen.</label></li>
+<li><label><input type="checkbox">Refactoren Sie Ihren Code in die Struktur der Vorlage <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/code.py"><code>code.py</code></a>: alle veränderlichen Werte kommen in die <a href="https://github.com/jhumci/MECH-M-3-IIoT/blob/main/src/raspi_firmware/settings.toml"><code>settings.toml</code></a>, die Logik in die vorgesehenen Klassen.</label></li>
 </ul>
+<section id="erste-schritte-mit-dem-pico-w" class="level3">
+<h3 class="anchored" data-anchor-id="erste-schritte-mit-dem-pico-w">Erste Schritte mit dem Pico W</h3>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>CircuitPython, nicht MicroPython
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Die Vorlage <code>code.py</code>, der TOML-Parser in <code>lib/</code> und alle Hinweise auf dieser Seite beziehen sich auf <strong>CircuitPython</strong>. MicroPython ist ein naher Verwandter, aber die Vorlage und die Adafruit-Bibliotheken laufen dort nicht. Wenn Sie MicroPython oder den ESP32 verwenden möchten, sprechen Sie das vorher mit der Lehrveranstaltungsleitung ab.</p>
+</div>
+</div>
+<ol type="1">
+<li><p><strong>CircuitPython installieren.</strong> Laden Sie die aktuelle <code>.uf2</code>-Datei für den <a href="https://circuitpython.org/board/raspberry_pi_pico_w/">Raspberry Pi Pico W</a> herunter. Halten Sie die Taste <code>BOOTSEL</code> am Pico gedrückt, während Sie das USB-Kabel einstecken. Es erscheint ein Laufwerk <code>RPI-RP2</code>, auf das Sie die <code>.uf2</code>-Datei kopieren. Der Pico startet neu und meldet sich als Laufwerk <code>CIRCUITPY</code>.</p></li>
+<li><p><strong>Bibliotheken kopieren.</strong> Laden Sie das <a href="https://circuitpython.org/libraries">Adafruit CircuitPython Bundle</a> herunter, dessen Versionsnummer zu Ihrer CircuitPython-Version passt (z.B. Bundle 10.x für CircuitPython 10). Legen Sie auf <code>CIRCUITPY</code> einen Ordner <code>lib/</code> an und kopieren Sie aus dem Bundle hinein:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Datei / Ordner aus dem Bundle</th>
+<th>Wofür</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>adafruit_dht.mpy</code></td>
+<td>DHT11 auslesen</td>
+</tr>
+<tr class="even">
+<td><code>adafruit_minimqtt/</code> (ganzer Ordner)</td>
+<td>MQTT-Client</td>
+</tr>
+<tr class="odd">
+<td><code>adafruit_connection_manager.mpy</code>, <code>adafruit_ticks.mpy</code></td>
+<td>werden von MiniMQTT benötigt</td>
+</tr>
+<tr class="even">
+<td><code>adafruit_ntp.mpy</code></td>
+<td>Uhrzeit aus dem Internet holen (siehe Hinweise unten)</td>
+</tr>
+</tbody>
+</table>
+<p>Dazu kommt <code>toml.py</code> aus <a href="https://github.com/jhumci/MECH-M-3-IIoT/tree/main/src/raspi_firmware/lib"><code>src/raspi_firmware/lib/</code></a> dieses Repositories.</p></li>
+<li><p><strong><code>code.py</code> und <code>settings.toml</code></strong> liegen im Hauptverzeichnis von <code>CIRCUITPY</code>. <code>code.py</code> startet automatisch, sobald Sie eine Datei auf dem Laufwerk speichern. Ein eigener Upload-Schritt ist nicht nötig.</p></li>
+<li><p><strong>Serielle Konsole öffnen.</strong> Alle <code>print()</code>-Ausgaben und alle Fehlermeldungen Ihres Programms erscheinen nur dort. Ohne Konsole arbeiten Sie blind. Geeignet sind z.B. der <a href="https://codewith.mu/">Mu Editor</a>, die Erweiterung <em>Serial Monitor</em> in VS Code, PuTTY (Windows) oder <code>screen</code>/<code>minicom</code> (Linux, macOS), jeweils mit 115200 Baud. Details: <a href="https://learn.adafruit.com/welcome-to-circuitpython/kattni-connecting-to-the-serial-console">Connecting to the Serial Console</a>. In der Konsole beendet <code>Ctrl+C</code> das Programm und <code>Ctrl+D</code> startet es neu.</p></li>
+</ol>
+</section>
+<section id="meilensteine" class="level3">
+<h3 class="anchored" data-anchor-id="meilensteine">Meilensteine</h3>
+<p>Jeder Meilenstein liefert ein sichtbares Ergebnis. Gehen Sie erst zum nächsten, wenn der aktuelle stabil läuft, dann wissen Sie bei Problemen immer, welcher Teil schuld ist.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Meilenstein</th>
+<th>Woran Sie den Erfolg erkennen</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>LED blinken lassen (<code>board.LED</code>, <code>digitalio</code>)</td>
+<td>Die Onboard-LED blinkt. Sie wissen, wie Sie Code auf den Pico bringen und die Konsole lesen.</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Sensor auslesen (<code>adafruit_dht</code>), alle 2 Sekunden <code>print()</code></td>
+<td>Temperatur und Luftfeuchtigkeit erscheinen in der Konsole. Einzelne Fehlversuche werden abgefangen und das Programm läuft weiter.</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Mit dem WLAN verbinden (<code>wifi</code>, <code>socketpool</code>)</td>
+<td>Die IP-Adresse des Pico erscheint in der Konsole.</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Eine einzelne MQTT-Nachricht senden (<code>adafruit_minimqtt</code>)</td>
+<td>Die Nachricht ist im MQTT Explorer unter Ihrem Topic sichtbar.</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>Spezifikation erfüllen</td>
+<td>Payload ist JSON mit <code>timestamp</code>, <code>value</code> und <code>unit</code> wie in <code>asyncapi.yaml</code>. Auf dem Status-Topic steht <code>ok</code>, nach dem Abstecken des Pico wechselt es von selbst auf <code>offline</code>.</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Refactoring</td>
+<td>Struktur wie in der Vorlage, Konfiguration in <code>settings.toml</code>, Sendeintervall aus der Konfiguration.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hinweise-zu-den-schwierigen-stellen" class="level3">
+<h3 class="anchored" data-anchor-id="hinweise-zu-den-schwierigen-stellen">Hinweise zu den schwierigen Stellen</h3>
+<p>Hier keine Lösungen, sondern die Stichworte, die Ihnen die Suche verkürzen:</p>
+<ul>
+<li><strong>Zeitstempel.</strong> Die Spezifikation verlangt einen Zeitstempel in UTC nach ISO 8601. Der Pico hat keine batteriegepufferte Uhr; nach dem Einschalten steht sie auf dem Jahr 2000. Stichworte: <code>adafruit_ntp</code> holt die Zeit aus dem Internet, das Modul <code>rtc</code> setzt die Uhr des Pico.</li>
+<li><strong>Datum formatieren.</strong> Das <code>time</code>-Modul von CircuitPython hat kein <code>strftime</code>. <code>time.localtime()</code> liefert aber ein Tupel aus Jahr, Monat, Tag, Stunde, Minute und Sekunde, aus dem sich der String mit einer Formatierung zusammenbauen lässt.</li>
+<li><strong>Client-ID.</strong> Der Broker erlaubt jede Client-ID nur einmal. Melden sich zwei Geräte mit derselben ID an, werfen sie sich gegenseitig hinaus, und beide sehen ständig Verbindungsabbrüche. Die Vorlage der <code>settings.toml</code> hat dafür keinen eigenen Schlüssel. Überlegen Sie, woraus Sie eine ID ableiten, die in der ganzen Gruppe eindeutig ist.</li>
+<li><strong>Last Will.</strong> Das <code>offline</code> auf dem Status-Topic sendet nicht Ihr Programm, sondern der Broker, wenn die Verbindung abbricht. Es wird beim Verbindungsaufbau hinterlegt. Stichwort: <code>will_set()</code> in MiniMQTT, retained.</li>
+<li><strong>Sensorfehler.</strong> Der DHT11 liefert regelmäßig einen <code>RuntimeError</code> (Checksum, Timing). Das ist kein Fehler in Ihrem Aufbau, sondern normal. Fangen Sie ihn ab und versuchen Sie es beim nächsten Intervall erneut.</li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Typische Probleme
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>WLAN wird nicht gefunden.</strong> Der Pico W kann nur 2,4-GHz-Netze. Viele Router senden 5 GHz unter demselben Namen; das erkennt der Pico nicht. Handy-Hotspots funktionieren meist, wenn sie auf 2,4 GHz eingestellt sind.</li>
+<li><strong><code>ImportError: no module named 'socket'</code></strong> oder <code>select</code>: Diese Module gibt es in CircuitPython nicht. Für Netzwerkzugriffe ist <code>socketpool</code> zuständig, siehe Termin 2.</li>
+<li><strong><code>AttributeError: 'module' object has no attribute 'strftime'</code></strong>: siehe Hinweis <em>Datum formatieren</em>.</li>
+<li><strong><code>ImportError: no module named 'adafruit_...'</code></strong>: Datei fehlt in <code>lib/</code> oder das Bundle passt nicht zur CircuitPython-Version.</li>
+<li><strong>Temperatur zu hoch.</strong> Sitzt der Sensor direkt neben dem Pico, misst er dessen Abwärme mit. Siehe <a href="../docs/Materialien.html">Materialien</a>.</li>
+<li><strong>Alles hängt nach mehreren Neustarts.</strong> Häufige Neustarts per Speichern oder <code>Ctrl+D</code> können das WLAN-Modul aufhängen. USB-Kabel kurz abstecken, dann läuft es wieder.</li>
+<li><strong>Verbindung bricht ständig ab.</strong> Meist eine doppelte Client-ID, siehe oben.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
 </section>
 </section>
 <section id="asynchrone-inhalte" class="level1">
 <h1>Asynchrone Inhalte</h1>
 <p>Mit folgenden Inhalten sollten Sie sich vertraut machen, um die Aufgabenstellung erfolgreich zu bearbeiten:</p>
+<p><strong>CircuitPython auf dem Pico W</strong> (die Vorlage baut darauf auf):</p>
 <ul>
-<li><a href="https://mciwing.github.io/micropython/">MicroPython</a>: Einleitung zur Arbeit mit MicroPython mit ESP32</li>
-<li><a href="https://wokwi.com/projects/new/micropython-pi-pico-w">Wokwi</a>: Ein Online-Simulator für Mikrocontroller, der es ermöglicht, Schaltungen zu entwerfen und zu testen. Nutzen Sie bei Bedarf den Simulator, um einfache Schaltungen mit dem Raspberry Pi Pico W zu erstellen und zu testen.</li>
-<li><a href="https://docs.aws.amazon.com/whitepapers/latest/designing-mqtt-topics-aws-iot-core/mqtt-design-best-practices.html">AWS Whitepaper on MQTT</a></li>
-<li><a href="https://www.asyncapi.com/en">AsyncAPI</a>: Eine Spezifikation für die Beschreibung von asynchronen APIs, die Ihnen helfen kann, Ihre MQTT-Interaktionen zu dokumentieren und zu gestalten.</li>
-<li><a href="https://mqtt-explorer.com/">MQTT Explorer</a>: Free and Open Source MQTT-Client zur Visualisierung von MQTT-Nachrichten.</li>
-<li><a href="https://docs.micropython.org/en/latest/esp32/tutorial/intro.html">Einführung in MicroPython</a></li>
-<li><a href="https://learn.adafruit.com/welcome-to-circuitpython">Einführung in Circuit Python</a></li>
-<li><a href="https://docs.platformio.org/en/latest/">Einführung in PlatformIO</a></li>
+<li><a href="https://learn.adafruit.com/welcome-to-circuitpython">Welcome to CircuitPython</a>: Installation, <code>CIRCUITPY</code>-Laufwerk, serielle Konsole</li>
+<li><a href="https://learn.adafruit.com/pico-w-wifi-with-circuitpython">Pico W WiFi with CircuitPython</a>: WLAN-Verbindung, <code>settings.toml</code>, erste Netzwerkzugriffe</li>
+<li><a href="https://learn.adafruit.com/mqtt-in-circuitpython">MQTT in CircuitPython</a>: Einführung in MiniMQTT, dazu die <a href="https://docs.circuitpython.org/projects/minimqtt/en/latest/">API-Dokumentation</a></li>
+<li><a href="https://learn.adafruit.com/dht/dht-circuitpython-code">DHT CircuitPython Code</a>: Auslesen des DHT11 mit <code>adafruit_dht</code></li>
+<li><a href="https://wokwi.com/projects/new/micropython-pi-pico-w">Wokwi</a>: Online-Simulator für Mikrocontroller. Nützlich, um Schaltungen zu testen; simuliert allerdings MicroPython, nicht CircuitPython.</li>
+</ul>
+<p><strong>MQTT und Schnittstellen-Beschreibung:</strong></p>
+<ul>
+<li><a href="https://docs.aws.amazon.com/whitepapers/latest/designing-mqtt-topics-aws-iot-core/mqtt-design-best-practices.html">AWS Whitepaper on MQTT</a>: Topic-Design und Best Practices</li>
+<li><a href="https://www.asyncapi.com/en">AsyncAPI</a>: Die Spezifikation, in der <code>asyncapi.yaml</code> geschrieben ist. Im <a href="https://studio.asyncapi.com/">AsyncAPI Studio</a> lässt sich die Datei lesbar darstellen.</li>
+<li><a href="https://mqtt-explorer.com/">MQTT Explorer</a>: Freier MQTT-Client zur Visualisierung von Nachrichten. Abonnieren Sie <code>iiot/group/#</code>, um auch die Nachrichten der anderen Gruppen zu sehen.</li>
+</ul>
+<p><strong>Zum Hintergrund</strong> (nicht für die Vorlage nötig):</p>
+<ul>
+<li><a href="https://mciwing.github.io/micropython/">MicroPython</a> und die <a href="https://docs.micropython.org/en/latest/esp32/tutorial/intro.html">MicroPython-Einführung</a>: der nahe Verwandte von CircuitPython, verbreitet auf dem ESP32</li>
+<li><a href="https://docs.platformio.org/en/latest/">PlatformIO</a>: Build-System für die ESP32-Vorlage in <code>src/esp32_firmware</code></li>
 </ul>
 
 
