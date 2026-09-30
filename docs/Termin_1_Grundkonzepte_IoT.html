@@ -197,7 +197,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Die Vorlage <code>code.py</code>, der TOML-Parser in <code>lib/</code> und alle Hinweise auf dieser Seite beziehen sich auf <strong>CircuitPython</strong>. MicroPython ist ein naher Verwandter, aber die Vorlage und die Adafruit-Bibliotheken laufen dort nicht. Wenn Sie MicroPython oder den ESP32 verwenden möchten, sprechen Sie das vorher mit der Lehrveranstaltungsleitung ab.</p>
+<p>Die Vorlage <code>code.py</code>, der TOML-Parser in <code>lib/</code> und alle Hinweise auf dieser Seite beziehen sich auf <strong>CircuitPython</strong>. MicroPython ist ein naher Verwandter, aber die Vorlage und die Adafruit-Bibliotheken laufen dort nicht. Für den ESP32 gibt es eine eigene Vorlage in <code>src/esp32_firmware</code> (Arduino/PlatformIO). Wenn Sie MicroPython verwenden möchten, sprechen Sie das vorher mit der Lehrveranstaltungsleitung ab.</p>
 </div>
 </div>
 <ol type="1">
@@ -278,7 +278,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>5</td>
 <td>Spezifikation erfüllen</td>
-<td>Payload ist JSON mit <code>timestamp</code>, <code>value</code> und <code>unit</code> wie in <code>asyncapi.yaml</code>. Auf dem Status-Topic steht <code>ok</code>, nach dem Abstecken des Pico wechselt es von selbst auf <code>offline</code>.</td>
+<td>Payload ist JSON mit <code>timestamp</code>, <code>value</code> und <code>unit</code> wie in <code>asyncapi.yaml</code>. Auf dem Status-Topic steht <code>ok</code>, nach dem Abstecken des Pico wechselt es nach kurzer Zeit von selbst auf <code>offline</code>.</td>
 </tr>
 <tr class="even">
 <td>6</td>
@@ -294,7 +294,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><strong>Zeitstempel.</strong> Die Spezifikation verlangt einen Zeitstempel in UTC nach ISO 8601. Der Pico hat keine batteriegepufferte Uhr; nach dem Einschalten steht sie auf dem Jahr 2000. Stichworte: <code>adafruit_ntp</code> holt die Zeit aus dem Internet, das Modul <code>rtc</code> setzt die Uhr des Pico.</li>
 <li><strong>Datum formatieren.</strong> Das <code>time</code>-Modul von CircuitPython hat kein <code>strftime</code>. <code>time.localtime()</code> liefert aber ein Tupel aus Jahr, Monat, Tag, Stunde, Minute und Sekunde, aus dem sich der String mit einer Formatierung zusammenbauen lässt.</li>
-<li><strong>Client-ID.</strong> Der Broker erlaubt jede Client-ID nur einmal. Melden sich zwei Geräte mit derselben ID an, werfen sie sich gegenseitig hinaus, und beide sehen ständig Verbindungsabbrüche. Die Vorlage der <code>settings.toml</code> hat dafür keinen eigenen Schlüssel. Überlegen Sie, woraus Sie eine ID ableiten, die in der ganzen Gruppe eindeutig ist.</li>
+<li><strong>Client-ID.</strong> Der Broker erlaubt jede Client-ID nur einmal. Melden sich zwei Geräte mit derselben ID an, werfen sie sich gegenseitig hinaus, und beide sehen ständig Verbindungsabbrüche. Die Vorlage der <code>settings.toml</code> hat dafür keinen eigenen Schlüssel. Überlegen Sie, woraus Sie eine ID ableiten, die über alle Gruppen hinweg eindeutig ist.</li>
 <li><strong>Last Will.</strong> Das <code>offline</code> auf dem Status-Topic sendet nicht Ihr Programm, sondern der Broker, wenn die Verbindung abbricht. Es wird beim Verbindungsaufbau hinterlegt. Stichwort: <code>will_set()</code> in MiniMQTT, retained.</li>
 <li><strong>Sensorfehler.</strong> Der DHT11 liefert regelmäßig einen <code>RuntimeError</code> (Checksum, Timing). Das ist kein Fehler in Ihrem Aufbau, sondern normal. Fangen Sie ihn ab und versuchen Sie es beim nächsten Intervall erneut.</li>
 </ul>
