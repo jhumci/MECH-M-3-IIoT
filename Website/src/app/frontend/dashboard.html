@@ -1,0 +1,106 @@
+<main class="min-h-screen bg-slate-100 p-6">
+  <div class="mx-auto max-w-lg space-y-6">
+    <h1 class="text-2xl font-bold">ESP Dashboard</h1>
+
+    <section class="space-y-4 rounded-xl bg-white p-6 shadow">
+      <h2 class="text-lg font-semibold">API-Verbindung</h2>
+      <form (ngSubmit)="saveApiAddress()" class="space-y-4">
+        <fieldset class="space-y-2">
+          <legend>IP-Adresse des ESP</legend>
+          <div class="flex items-center gap-2">
+            @for (block of ipBlocks; track $index; let i = $index) {
+              @if (i > 0) {
+                <span aria-hidden="true">.</span>
+              }
+              <input
+                type="text"
+                inputmode="numeric"
+                maxlength="3"
+                autocomplete="off"
+                [attr.aria-label]="'IP-Block ' + (i + 1)"
+                [value]="block"
+                (input)="updateIpBlock(i, $event)"
+                class="min-w-0 w-16 rounded border border-slate-300 p-2 text-center"
+              />
+            }
+          </div>
+        </fieldset>
+        <div class="space-y-2">
+          <label for="api-port" class="block">Port (Standard: 80)</label>
+          <input
+            id="api-port"
+            name="apiPort"
+            type="number"
+            min="1"
+            max="65535"
+            step="1"
+            required
+            [(ngModel)]="apiPort"
+            class="w-28 rounded border border-slate-300 p-2"
+          />
+        </div>
+        <button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700">
+          Adresse speichern
+        </button>
+      </form>
+      @if (baseUrl()) {
+        <p class="break-all text-sm text-slate-700">Aktive Adresse: {{ baseUrl() }}</p>
+      } @else {
+        <p class="text-sm text-amber-700">Noch keine API-Adresse gesetzt. Bitte zuerst eine Adresse speichern.</p>
+      }
+      <p role="status" class="text-sm text-slate-700">{{ addressMessage() }}</p>
+    </section>
+
+    <section class="space-y-4 rounded-xl bg-white p-6 shadow">
+      <h2 class="text-lg font-semibold">Status</h2>
+      @if (status() !== null) {
+        <pre class="overflow-auto whitespace-pre-wrap break-words text-sm">{{ status() | json }}</pre>
+      } @else {
+        <p>Noch nicht abgefragt</p>
+      }
+
+      <button
+        type="button"
+        (click)="getStatus()"
+        class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+      >
+        Status abfragen
+      </button>
+    </section>
+
+    <section class="space-y-4 rounded-xl bg-white p-6 shadow">
+      <h2 class="text-lg font-semibold">Übertragungsintervall</h2>
+
+      <label for="interval" class="block">Intervall in Sekunden</label>
+      <input
+        id="interval"
+        type="number"
+        min="1"
+        max="86400"
+        step="1"
+        [(ngModel)]="interval"
+        class="w-full rounded border border-slate-300 p-2"
+      />
+
+      <div class="flex gap-3">
+        <button
+          type="button"
+          (click)="getInterval()"
+          class="rounded bg-slate-200 px-4 py-2 hover:bg-slate-300"
+        >
+          Abfragen
+        </button>
+
+        <button
+          type="button"
+          (click)="saveInterval()"
+          class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+        >
+          Speichern
+        </button>
+      </div>
+    </section>
+
+    <p role="status" class="text-sm text-slate-700">{{ message() }}</p>
+  </div>
+</main>
