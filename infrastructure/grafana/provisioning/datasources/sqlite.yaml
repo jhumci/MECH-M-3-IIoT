@@ -1,0 +1,12 @@
+apiVersion: 1
+datasources:
+  - name: IIoT SQLite
+    uid: iiot-sqlite
+    type: frser-sqlite-datasource
+    access: proxy
+    isDefault: true
+    editable: false
+    jsonData:
+      path: /measurements/measurements.sqlite
+      pathOptions: mode=ro
+      attachLimit: 0

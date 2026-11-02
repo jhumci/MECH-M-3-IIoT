@@ -1,0 +1,17 @@
+services:
+  broker:
+    image: eclipse-mosquitto:2.0.22
+    command: ['mosquitto', '-c', '/mosquitto-no-auth.conf']
+    volumes:
+      - ./infrastructure/tests/mosquitto.conf:/mosquitto-no-auth.conf:ro
+  collector:
+    environment:
+      MQTT_HOST: broker
+      MQTT_USERNAME: ''
+      MQTT_PASSWORD: ''
+    depends_on:
+      broker:
+        condition: service_started
+  grafana:
+    ports: !override
+      - '127.0.0.1:3300:3000'

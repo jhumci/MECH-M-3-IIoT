@@ -10,3 +10,9 @@ _site/
 .env
 
 **/*.quarto_ipynb
+
+# Lokale Datenbankexporte und Backups
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm

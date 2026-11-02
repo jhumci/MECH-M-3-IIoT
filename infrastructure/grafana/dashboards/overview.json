@@ -1,0 +1,195 @@
+{
+  "uid": "iiot-overview",
+  "title": "IIoT \u00dcbersicht",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Temperatur",
+      "type": "timeseries",
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "iiot-sqlite"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawQueryText": "SELECT CAST(time / MAX(1, $__interval_ms / 1000) AS INTEGER) * MAX(1, $__interval_ms / 1000) AS time, AVG(CASE WHEN unit='K' THEN value-273.15 ELSE value END) AS value, group_name || ' / ' || sensor_id AS metric FROM readings WHERE group_name IN (${group:sqlstring}) AND metric='temperature' AND unit IN ('\u00b0C','K') AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY 1, group_name, sensor_id ORDER BY 1",
+          "queryText": "SELECT CAST(time / MAX(1, $__interval_ms / 1000) AS INTEGER) * MAX(1, $__interval_ms / 1000) AS time, AVG(CASE WHEN unit='K' THEN value-273.15 ELSE value END) AS value, group_name || ' / ' || sensor_id AS metric FROM readings WHERE group_name IN (${group:sqlstring}) AND metric='temperature' AND unit IN ('\u00b0C','K') AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY 1, group_name, sensor_id ORDER BY 1",
+          "queryType": "time series",
+          "timeColumns": [
+            "time"
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "options": {},
+      "maxDataPoints": 1000
+    },
+    {
+      "id": 2,
+      "title": "Luftfeuchtigkeit",
+      "type": "timeseries",
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "iiot-sqlite"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawQueryText": "SELECT CAST(time / MAX(1, $__interval_ms / 1000) AS INTEGER) * MAX(1, $__interval_ms / 1000) AS time, AVG(value) AS value, group_name || ' / ' || sensor_id AS metric FROM readings WHERE group_name IN (${group:sqlstring}) AND metric='humidity' AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY 1, group_name, sensor_id ORDER BY 1",
+          "queryText": "SELECT CAST(time / MAX(1, $__interval_ms / 1000) AS INTEGER) * MAX(1, $__interval_ms / 1000) AS time, AVG(value) AS value, group_name || ' / ' || sensor_id AS metric FROM readings WHERE group_name IN (${group:sqlstring}) AND metric='humidity' AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY 1, group_name, sensor_id ORDER BY 1",
+          "queryType": "time series",
+          "timeColumns": [
+            "time"
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "options": {},
+      "maxDataPoints": 1000
+    },
+    {
+      "id": 3,
+      "title": "Alle Messwerte im Zeitraum",
+      "type": "table",
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "iiot-sqlite"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawQueryText": "SELECT group_name, sensor_id, metric, unit, COUNT(*) AS samples, MIN(value) AS minimum, MAX(value) AS maximum, AVG(value) AS average FROM readings WHERE group_name IN (${group:sqlstring}) AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY group_name,sensor_id,metric,unit",
+          "queryText": "SELECT group_name, sensor_id, metric, unit, COUNT(*) AS samples, MIN(value) AS minimum, MAX(value) AS maximum, AVG(value) AS average FROM readings WHERE group_name IN (${group:sqlstring}) AND time >= $__from / 1000 AND time < $__to / 1000 GROUP BY group_name,sensor_id,metric,unit",
+          "queryType": "table",
+          "timeColumns": [
+            "time"
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "title": "Letzte empfangene Nachrichten",
+      "type": "table",
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "iiot-sqlite"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawQueryText": "SELECT received_at AS time, topic, qos, retained, parse_error FROM messages ORDER BY id DESC LIMIT 50",
+          "queryText": "SELECT received_at AS time, topic, qos, retained, parse_error FROM messages ORDER BY id DESC LIMIT 50",
+          "queryType": "table",
+          "timeColumns": [
+            "time"
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 5,
+      "title": "Letzte Messwerte im gew\u00e4hlten Zeitraum",
+      "type": "table",
+      "datasource": {
+        "type": "frser-sqlite-datasource",
+        "uid": "iiot-sqlite"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "rawQueryText": "SELECT group_name, sensor_id, metric, value, unit, time, time_source FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY group_name,sensor_id,metric ORDER BY time DESC,id DESC) AS position FROM readings WHERE group_name IN (${group:sqlstring}) AND time >= $__from / 1000 AND time < $__to / 1000) WHERE position=1",
+          "queryText": "SELECT group_name, sensor_id, metric, value, unit, time, time_source FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY group_name,sensor_id,metric ORDER BY time DESC,id DESC) AS position FROM readings WHERE group_name IN (${group:sqlstring}) AND time >= $__from / 1000 AND time < $__to / 1000) WHERE position=1",
+          "queryType": "table",
+          "timeColumns": [
+            "time"
+          ]
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {}
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "group",
+        "label": "Gruppe",
+        "type": "query",
+        "datasource": {
+          "type": "frser-sqlite-datasource",
+          "uid": "iiot-sqlite"
+        },
+        "query": "SELECT DISTINCT group_name FROM readings ORDER BY group_name",
+        "refresh": 1,
+        "multi": true,
+        "includeAll": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  }
+}

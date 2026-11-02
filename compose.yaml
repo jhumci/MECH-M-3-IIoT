@@ -1,0 +1,68 @@
+name: iiot
+services:
+  collector:
+    build: ./infrastructure/collector
+    restart: "on-failure:5"
+    init: true
+    environment:
+      MQTT_HOST: ${MQTT_HOST:?Set MQTT_HOST in .env}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MQTT_USERNAME: ${MQTT_USERNAME:-}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+      MQTT_TLS: ${MQTT_TLS:-false}
+      MQTT_TOPICS: ${MQTT_TOPICS:-iiot/group/#}
+      MQTT_CLIENT_ID: ${MQTT_CLIENT_ID:-}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - measurements:/data
+      - backups:/backups
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, python, -c, "import pathlib,time; p=pathlib.Path('/tmp/collector-health'); raise SystemExit(not p.exists() or time.time()-p.stat().st_mtime>30)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+
+  grafana:
+    image: grafana/grafana:13.3.0
+    restart: "on-failure:5"
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env}
+      GF_USERS_ALLOW_SIGN_UP: 'false'
+      GF_AUTH_ANONYMOUS_ENABLED: 'false'
+      GF_PLUGINS_PREINSTALL_AUTO_UPDATE: 'false'
+      GF_PLUGINS_PREINSTALL_SYNC: frser-sqlite-datasource@4.0.6
+    ports:
+      - '127.0.0.1:${GRAFANA_PORT:-3000}:3000'
+    volumes:
+      - grafana:/var/lib/grafana
+      - measurements:/measurements:ro
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/grafana/dashboards:/etc/grafana/dashboards:ro
+    depends_on:
+      collector:
+        condition: service_healthy
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD-SHELL, 'wget -q -O /dev/null http://127.0.0.1:3000/api/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+
+volumes:
+  measurements:
+  grafana:
+  backups:
