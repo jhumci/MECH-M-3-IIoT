@@ -3,7 +3,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { MeasurementChart, seriesColor } from './measurement-chart';
+import { ChartTimeRange, MeasurementChart, seriesColor } from './measurement-chart';
 import { MeasurementResponse, SensorOption } from './models';
 
 @Component({
@@ -13,6 +13,7 @@ import { MeasurementResponse, SensorOption } from './models';
 })
 export class Measurements {
   readonly color = seriesColor;
+  readonly filtersOpen = signal(false);
   private readonly http = inject(HttpClient);
   private readonly destroy = inject(DestroyRef);
   readonly metadata = signal<SensorOption[]>([]);
@@ -29,6 +30,22 @@ export class Measurements {
   refreshSeconds = 10;
   showRange = false;
   readonly response = signal<MeasurementResponse | null>(null);
+  readonly viewRange = signal<ChartTimeRange | null>(null);
+  private latestResult?: { data: MeasurementResponse; updatedAt: Date; description: string };
+
+  selectRange(range: ChartTimeRange) { this.viewRange.set(range); }
+
+  resetView() {
+    this.viewRange.set(null);
+    if (this.latestResult) this.displayResult(this.latestResult);
+  }
+
+  private displayResult(result: { data: MeasurementResponse; updatedAt: Date; description: string }) {
+    this.response.set(result.data);
+    this.updatedAt.set(result.updatedAt);
+    this.appliedDescription = result.description;
+  }
+
   readonly loading = signal(false);
   readonly error = signal('');
   readonly metadataError = signal('');
@@ -90,6 +107,7 @@ export class Measurements {
         return;
       }
     }
+    this.resetView();
     this.applied = { preset: this.preset, from: this.from, to: this.to,
       groups: [...this.selectedGroups()], sensors: [...this.selectedSensors], resolution: this.resolution };
     this.fetch();
@@ -115,8 +133,9 @@ export class Measurements {
     this.loading.set(true); this.error.set('');
     this.http.get<MeasurementResponse>('/api/readings', { params }).pipe(takeUntilDestroyed(this.destroy)).subscribe({
       next: data => {
-        this.response.set(data); this.updatedAt.set(new Date());
-        this.appliedDescription = `${begin.toLocaleString('de-AT')} – ${finish.toLocaleString('de-AT')} · ${filter.groups.length ? filter.groups.join(', ') : 'Alle Gruppen'}${filter.sensors.length ? ' · ' + filter.sensors.join(', ') : ''}`;
+        const description = `${begin.toLocaleString('de-AT')} – ${finish.toLocaleString('de-AT')} · ${filter.groups.length ? filter.groups.join(', ') : 'Alle Gruppen'}${filter.sensors.length ? ' · ' + filter.sensors.join(', ') : ''}`;
+        this.latestResult = { data, updatedAt: new Date(), description };
+        if (!this.viewRange()) this.displayResult(this.latestResult);
         this.loading.set(false);
       },
       error: (error: HttpErrorResponse) => {

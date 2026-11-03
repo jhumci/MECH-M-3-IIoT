@@ -61,6 +61,33 @@ describe('Measurement filters', () => {
     expect(c.error()).toContain('Archiv vorübergehend');
   });
 
+  it('freezes the displayed snapshot while fetching and restores the latest result on Home', () => {
+    const c = fixture.componentInstance;
+    const displayed = c.response();
+    const updatedAt = c.updatedAt();
+    c.selectRange({ from: 200, to: 800 });
+    c.refresh();
+    http.expectOne('/api/metadata').flush({ sensors: [] });
+    const latest = { ...empty, from: 100, to: 1100 };
+    http.expectOne(r => r.url === '/api/readings').flush(latest);
+    expect(c.response()).toBe(displayed);
+    expect(c.updatedAt()).toBe(updatedAt);
+    expect(c.viewRange()).toEqual({ from: 200, to: 800 });
+    c.selectRange({ from: 300, to: 500 });
+    expect(c.response()).toBe(displayed);
+    c.resetView();
+    expect(c.viewRange()).toBeNull();
+    expect(c.response()).toEqual(latest);
+  });
+
+  it('returns to the full view when applying new filters', () => {
+    const c = fixture.componentInstance;
+    c.selectRange({ from: 200, to: 800 });
+    c.apply();
+    expect(c.viewRange()).toBeNull();
+    http.expectOne(r => r.url === '/api/readings').flush(empty);
+  });
+
   it('renders the Grafana link and refresh intervals only in this dashboard', () => {
     const host = fixture.nativeElement as HTMLElement;
     const link = host.querySelector<HTMLAnchorElement>('a[target="_blank"]');
