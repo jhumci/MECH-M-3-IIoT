@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Dashboard } from './frontend/dashboard';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [Dashboard],
+  selector: 'app-root', standalone: true,
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './app.html',
 })
 export class App {}

@@ -62,6 +62,54 @@ services:
       driver: json-file
       options: {max-size: 10m, max-file: '3'}
 
+  api:
+    build: ./infrastructure/api
+    restart: "on-failure:5"
+    init: true
+    environment:
+      GRAFANA_URL: ${GRAFANA_URL:-http://localhost:${GRAFANA_PORT:-3000}/d/iiot-overview}
+    ports:
+      - '127.0.0.1:${API_PORT:-8000}:8000'
+    volumes:
+      - measurements:/measurements:ro
+    read_only: true
+    tmpfs: [/tmp]
+    depends_on:
+      collector:
+        condition: service_healthy
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+
+  website:
+    build: ./Website
+    restart: "on-failure:5"
+    ports:
+      - '127.0.0.1:${WEBSITE_PORT:-4200}:8080'
+    read_only: true
+    tmpfs: [/tmp]
+    depends_on:
+      api:
+        condition: service_healthy
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD-SHELL, 'wget -q -O /dev/null http://127.0.0.1:8080/health']
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: '3'}
+
 volumes:
   measurements:
   grafana:

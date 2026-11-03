@@ -5,6 +5,8 @@ from pathlib import Path
 import subprocess
 import time
 import urllib.request
+import urllib.parse
+from datetime import datetime, timezone
 import base64
 
 ENV = dict(os.environ, MQTT_HOST='broker', MQTT_TOPICS='iiot/group/#',
@@ -60,6 +62,17 @@ if __name__ == '__main__':
     for panel in dashboard['panels']:
         sql = panel['targets'][0]['rawQueryText'].replace('${group:sqlstring}', "'test-0'").replace('$__interval_ms', '1000')
         query(sql, 'time series' if panel['type'] == 'timeseries' else 'table')
+    with urllib.request.urlopen('http://localhost:3301/messdaten', timeout=15) as response:
+        assert '<app-root>' in response.read().decode()
+    api_params = urllib.parse.urlencode({'from': datetime.fromtimestamp(time.time()-3600, timezone.utc).isoformat(),
+        'to':datetime.fromtimestamp(time.time()+60, timezone.utc).isoformat(), 'groups':'test-0', 'sensors':'esp-0', 'interval':60})
+    with urllib.request.urlopen('http://localhost:3301/api/readings?' + api_params, timeout=15) as response:
+        result = json.load(response)
+        assert len(result['series']) == 2
+        assert all(s['group'] == 'test-0' for s in result['series'])
+        assert all(p['min'] <= p['mean'] <= p['max'] for s in result['series'] for p in s['points'])
+    with urllib.request.urlopen('http://localhost:3301/api/config', timeout=15) as response:
+        assert json.load(response)['grafana_url'].startswith('http://localhost:3300/')
     print('800 MQTT messages archived; Grafana datasource and dashboard verified')
     compose('restart','collector')
     compose('up','-d','--no-deps','--wait','collector')
@@ -71,9 +84,9 @@ if __name__ == '__main__':
     result = compose('exec','-T','collector','python','-c',
         f"import sqlite3; d=sqlite3.connect('{backup}'); print(d.execute('PRAGMA integrity_check').fetchone()[0]); print(d.execute('SELECT COUNT(*) FROM messages').fetchone()[0])")
     assert result == f'ok\n{before+800}', result
-    compose('stop','collector','grafana')
+    compose('stop','website','api','collector','grafana')
     compose('run','--rm','--no-deps','collector','python','collector.py','--restore',backup)
-    compose('start','collector','grafana')
+    compose('start','collector','grafana','api','website')
     assert count() == before+800
     compose('stop','broker')
     time.sleep(7)

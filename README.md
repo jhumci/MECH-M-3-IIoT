@@ -13,6 +13,24 @@ Unterlagen, Aufgabenstellung und Vorlagen für die synchronen Termine 1–3 der 
 - `Website/`: Angular-Anwendung
 - `docs/Dokumentation.qmd`: Platz für Ihre eigene Dokumentation
 
+## Gesamtes System mit Docker starten
+
+Die Angular-Website, Messdaten-API, der MQTT-Collector und Grafana lassen sich gemeinsam starten.
+Im Hauptverzeichnis `.env.example` nach `.env` kopieren und die Zugangsdaten eintragen, dann:
+
+```bash
+docker compose up -d --build
+```
+
+- Website mit den Tabs **Geräte-API** und **Messdaten**: http://localhost:4200
+- Grafana: http://localhost:3000 (auch im Messdaten-Tab verlinkt)
+- Stoppen: `docker compose stop`; später starten: `docker compose start`
+
+Die Messdaten-Diagramme bieten Zeit-, Gruppen- und Sensorfilter, optionale Min-/Max-Bereiche
+und eine Aktualisierung alle 5, 10 oder 30 Sekunden. Einrichtung, Konfiguration und
+Datensicherung sind in [infrastructure/README.md](infrastructure/README.md) beschrieben.
+Ein laufendes `ng serve` vorher beenden, damit Port 4200 frei ist.
+
 ## Angular-Anwendung lokal einrichten und starten
 
 ### 1. Node.js und npm installieren
@@ -45,7 +63,15 @@ Dadurch werden Angular und alle weiteren in `package.json` angegebenen Pakete he
 
 ### 4. Anwendung starten
 
-Führen Sie im Ordner `Website` folgenden Befehl aus:
+Für die Entwicklung mit automatischem Neuladen zuerst im Hauptverzeichnis die
+Daten-Dienste starten und den Website-Container stoppen:
+
+```bash
+docker compose stop website
+docker compose up -d collector api grafana
+```
+
+Führen Sie anschließend im Ordner `Website` folgenden Befehl aus:
 
 ```bash
 ng serve -o

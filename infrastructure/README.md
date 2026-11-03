@@ -1,4 +1,4 @@
-# Lokales MQTT-Archiv mit SQLite und Grafana
+# Lokales IIoT-System mit Angular, SQLite und Grafana
 
 Der Python-Collector speichert die Nachrichten des bestehenden Kurs-Brokers.
 Die Firmware bleibt unverändert. Jeder Rechner führt ein unabhängiges Archiv.
@@ -26,7 +26,20 @@ docker compose ps
 docker compose logs --tail=100 collector
 ```
 
-Grafana: http://localhost:3000, Benutzer `admin` (konfigurierbar).
+Die vier Dienste starten gemeinsam:
+
+| Dienst | Aufgabe / Adresse |
+| --- | --- |
+| `website` | Angular-Oberfläche: http://localhost:4200 |
+| `api` | Python-Lese-API für das Messdatenarchiv; über `/api` der Website erreichbar |
+| `collector` | MQTT empfangen und dauerhaft in SQLite speichern |
+| `grafana` | Grafana: http://localhost:3000, Benutzer `admin` (konfigurierbar) |
+
+Node.js, npm und Python müssen für diesen Docker-Betrieb nicht auf dem Rechner
+installiert werden. Ein noch laufendes `ng serve` vorher mit Strg+C beenden,
+da der Container denselben Port 4200 verwendet. Diese Adresse passt zur bestehenden
+ESP32-CORS-Freigabe. Der Build und die erste Installation benötigen Internetzugang.
+
 Dashboard unter **Dashboards → IIoT → IIoT Übersicht**.
 Beim ersten Start benötigt die Plugin-Installation Internetzugang.
 Grafana startet nach Initialisierung des Collectors, auch wenn der Broker offline ist.
@@ -44,6 +57,72 @@ Die Dienste starten nicht automatisch beim nächsten Docker-Start;
 **`docker compose down -v` löscht alle zugehörigen Daten dauerhaft.**
 Gleichen Projektordner/Compose-Projektnamen weiterverwenden, um dieselben
 Volumes wiederzuverwenden. Volumes sind keine Backups.
+
+## Angular-Dashboard und Konfiguration
+
+Die Website hat zwei Tabs:
+
+- **Geräte-API:** vorhandene ESP32-Konfiguration und Statusabfrage.
+- **Messdaten:** Temperatur- und Luftfeuchtigkeitsdiagramm mit gemeinsamen Filtern
+  und dem Link **In Grafana öffnen**. Der Link öffnet das vorhandene Grafana-Dashboard
+  in einem neuen Tab; dort gelten Grafanas eigene Filter und Anmeldung.
+
+Im Messdaten-Tab Zeitraum, Gruppen und bei Bedarf einzelne Sensoren auswählen.
+**Filter anwenden** lädt beide Diagramme mit derselben Auswahl. Keine Gruppen-
+oder Sensorauswahl bedeutet alle. Zeiträume können relativ oder über Von/Bis in
+lokaler Zeit eingestellt werden. Die Datenbank behält UTC-Zeitpunkte.
+
+Die Diagramme zeigen Mittelwerte pro Intervall, optional mit einem Min-/Max-Bereich.
+Die automatische Auflösung richtet sich nach dem Zeitraum; sie kann manuell gewählt
+werden. Die verwendete Auflösung und der Zeitpunkt der letzten erfolgreichen Abfrage
+stehen oberhalb der Diagramme. Kelvin wird in °C umgerechnet; Feuchtigkeit in %.
+Unbekannte Einheiten werden nicht in diese Diagramme gemischt. Originaldaten bleiben
+unverändert. Lücken werden bei fehlenden Zeitintervallen unterbrochen dargestellt.
+
+**Aktualisierung:** manuell oder alle **5, 10 oder 30 Sekunden**; Standard 10 Sekunden.
+Die automatische Aktualisierung verwendet die zuletzt angewendeten Filter und pausiert
+in ausgeblendeten Browser-Tabs. Relative Zeiträume wandern mit der aktuellen Zeit,
+ein eigener Von-/Bis-Zeitraum bleibt fest. **Aktualisieren** lädt außerdem die verfügbaren
+Gruppen und Sensoren erneut. Bei Fehlern bleiben die letzten Daten mit Fehlermeldung sichtbar.
+
+Optionale Einstellungen in der Hauptverzeichnis-`.env`:
+
+```dotenv
+WEBSITE_PORT=4200
+API_PORT=8000
+# Standard ergibt sich automatisch aus GRAFANA_PORT:
+# GRAFANA_URL=http://localhost:3000/d/iiot-overview
+```
+
+Nach Änderungen: `docker compose up -d --build`. Auch Quellcodeänderungen an Angular
+oder der Lese-API benötigen einen erneuten Build; `docker compose start` verwendet die
+bereits gebauten Container. Ein abweichender Website-Port erfordert für direkte
+ESP32-Abfragen eine dazu passende CORS-Freigabe in der Firmware.
+
+Die Lese-API und die Website binden ihre Ports nur an `127.0.0.1`. Die API erhält
+keine MQTT- oder Grafana-Passwörter und bindet das Messdatenvolume nur lesend ein.
+Sie verwendet parametrisierte SQL-Abfragen, validierte Filter und begrenzte
+Datenmengen/Abfragezeiten. Zu feine Auflösungen oder zu viele Messreihen werden mit
+einer verständlichen Meldung abgewiesen; die Daten werden nicht still abgeschnitten.
+Die API-Dokumentation ist lokal unter http://localhost:8000/docs erreichbar.
+
+### Angular mit automatischem Neuladen entwickeln
+
+Die Daten-Dienste starten, den Website-Container aber stoppen, bevor `ng serve`
+denselben Port übernimmt:
+
+```bash
+docker compose stop website
+docker compose up -d collector api grafana
+cd Website
+npm install
+ng serve -o
+```
+
+Die Angular-Proxykonfiguration leitet `/api` an `http://localhost:8000` weiter.
+Bei geändertem `API_PORT` auch `Website/proxy.conf.json` anpassen. Für den vollständigen
+Docker-Betrieb `ng serve` beenden und im Hauptverzeichnis `docker compose up -d --build`
+aufrufen.
 
 ## Daten und Grenzen
 
@@ -106,7 +185,7 @@ Keine laufende SQLite-Datei einfach kopieren (insbesondere nicht ohne ihre WAL-D
 für dauerhaftes Sammeln regelmäßig wiederholen. Auch Grafana-Eigenänderungen
 separat exportieren; das mitgelieferte Dashboard ist im Repository versioniert.
 
-Zum Wiederherstellen zunächst ein aktuelles Backup erstellen. Danach beide
+Zum Wiederherstellen zunächst ein aktuelles Backup erstellen. Danach alle
 Dienste stoppen, die geprüfte Sicherung in den gestoppten Collector kopieren
 und wieder starten:
 
@@ -119,7 +198,7 @@ docker compose start
 
 Die Wiederherstellung prüft Integrität und Schema, erzeugt die DB mit den richtigen
 Dateirechten und entfernt alte WAL-/SHM-Dateien. Sie darf ausschließlich bei
-beiden gestoppten Diensten ausgeführt werden und ersetzt den bisherigen DB-Stand.
+allen gestoppten Diensten ausgeführt werden und ersetzt den bisherigen DB-Stand.
 Manuelle Löschung einzelner Zeiträume erst nach Backup und anhand gezielter
 SQL-Transaktionen; es gibt absichtlich keinen automatischen Löschdienst.
 
@@ -139,7 +218,7 @@ bestätigen. Volles Volume: Speicher freigeben/erweitern und Dienst neu starten.
 Grafana-Adminpasswort in `.env` gilt für die Erstinitialisierung; spätere Änderungen
 müssen über Grafana erfolgen.
 
-Isolierter Integrationstest (Test-Grafana auf Port 3300, eigener lokaler Test-Broker,
+Isolierter Integrationstest (Test-Grafana auf Port 3300, Test-Website auf Port 3301, eigener lokaler Test-Broker,
 keine Kurs-Broker-Nachrichten):
 
 ```bash
@@ -160,7 +239,7 @@ realen Gruppenformaten. Lokale Python-Tests ersetzen diesen Integrationstest nic
 - Isolierter Docker-Test mit 800 QoS-1-Nachrichten aus acht Gruppen erfolgreich;
   Grafana-Datenquelle, Neustarts, Persistenz, Restore und Broker-Wiederverbindung geprüft.
 - Betrieb am Kurs-Broker gestartet; echte Nachrichten und Messwerte in SQLite nachgewiesen.
-- Beide Dienste healthy; Grafana-Anmeldung und alle fünf Dashboard-Abfragen geprüft.
+- Collector und Grafana healthy; Grafana-Anmeldung und alle fünf Dashboard-Abfragen geprüft.
 
 Dies ist eine Funktions- und Lastspitzenprüfung, kein Langzeittest. Individuelle
 Nachrichtenformate weiterer Gruppen bleiben zunächst im Roharchiv, sofern sie
