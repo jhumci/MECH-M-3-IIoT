@@ -34,9 +34,10 @@ channels:
 
   iiot/group/{group}/status:
     description: |
-      Status des Geräts einer Gruppe. Nach dem Verbindungsaufbau wird "ok" gesendet,
-      bei Fehlern (z.B. ungültige Sensordaten) "error". Als Last Will and Testament
-      wird "offline" hinterlegt, das der Broker bei unerwartetem Verbindungsabbruch sendet.
+      Status des Geräts einer Gruppe, immer als JSON. Nach dem Verbindungsaufbau wird
+      {"status": "ok"} gesendet, bei Fehlern (z.B. ungültige Sensordaten) {"status": "error"}.
+      Als Last Will and Testament wird {"status": "offline"} hinterlegt, das der Broker bei
+      unerwartetem Verbindungsabbruch sendet.
       Nachrichten werden retained gesendet, damit neue Subscriber den letzten Status sehen.
     parameters:
       group:

@@ -35,7 +35,7 @@ mqtt_password = "In Vorlesung erfragen"
 # Struktur siehe docs/iot-specs/conventions.md
 # Das Haupt-Topic für die Sensordaten (Temperatur, Luftfeuchtigkeit).
 telemetry_topic = "iiot/group/{nachname1-nachname2-nachname3}/sensor/temperature/state"
-# Das Topic für Statusmeldungen (z.B. "ok", "error", "offline").
+# Das Topic für Statusmeldungen als JSON, z.B. {"status": "ok"} (Werte: "ok", "error", "offline").
 status_topic = "iiot/group/{nachname1-nachname2-nachname3}/status"
 
 

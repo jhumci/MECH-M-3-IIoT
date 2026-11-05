@@ -152,8 +152,8 @@ class MqttClient:
     def connect(self):
         """
         Verbindet sich mit dem MQTT-Broker und setzt eine "Last Will and Testament"
-        Nachricht mit dem Status "offline", die der Broker sendet, falls das Gerät
-        unerwartet die Verbindung verliert.
+        Nachricht {"status": "offline"} (JSON, retained), die der Broker sendet, falls
+        das Gerät unerwartet die Verbindung verliert.
         """
         pass
 
@@ -168,10 +168,11 @@ class MqttClient:
 
     def publish_status(self, status: str):
         """
-        Sendet eine einfache Statusnachricht an das definierte Status-Topic.
+        Sendet den Status als JSON (retained) an das definierte Status-Topic,
+        z.B. {"status": "ok"}, siehe docs/iot-specs/asyncapi.yaml.
         Erlaubte Werte laut docs/iot-specs/conventions.md: "ok", "error", "offline".
 
-        :param status: Die zu sendende Statusnachricht ("ok", "error" oder "offline").
+        :param status: Der zu sendende Statuswert ("ok", "error" oder "offline").
         """
         pass
 
@@ -194,7 +195,7 @@ class WebServer:
     und docs/iot-specs/conventions.md festgelegt:
       GET  /config  -> aktuelle Konfiguration als JSON
       POST /config  <- neue Werte als JSON (z.B. {"reading_interval_seconds": 120})
-      GET  /status  -> Gerätestatus als JSON (Felder werden in der Gesamtgruppe festgelegt)
+      GET  /status  -> Gerätestatus als JSON (Felder siehe openapi.yaml)
     Eine zusätzliche HTML-Seite für Menschen (z.B. unter "/") ist optional.
 
     Hinweise:

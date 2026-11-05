@@ -2,10 +2,11 @@ openapi: 3.0.3
 info:
   title: Microcontroller REST API
   description: |
-    REST-Schnittstelle des Microcontrollers zur Konfiguration.
+    REST-Schnittstelle des Microcontrollers zur Konfiguration und Statusabfrage.
     Hinweis: Kommunikation unverschlüsselt (HTTP).
-    Die Feldnamen entsprechen den Schlüsseln in settings.toml.
-  version: 1.1.0
+    Die Feldnamen von /config entsprechen den Schlüsseln in settings.toml.
+    Die hier beschriebenen Felder sind verbindlich, weitere Felder dürfen ergänzt werden.
+  version: 1.2.0
 servers:
   - url: http://192.168.0.100
     description: Beispiel-Microcontroller
@@ -23,19 +24,60 @@ paths:
               schema:
                 $ref: '#/components/schemas/Config'
     post:
-      summary: Konfiguration setzen
-      description: Überschreibt die Konfiguration (z.B. neues Sendeintervall).
+      summary: Konfiguration ändern
+      description: |
+        Ändert das Sendeintervall im laufenden Betrieb.
+        Die device_id darf nicht über POST geändert werden.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Config'
+              $ref: '#/components/schemas/ConfigUpdate'
             example:
               reading_interval_seconds: 120
       responses:
         '200':
-          description: Konfiguration erfolgreich gesetzt
+          description: Konfiguration erfolgreich geändert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigUpdate'
+        '400':
+          description: Ungültige Konfiguration oder fehlerhaftes JSON
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                required:
+                  - error
+
+  /status:
+    get:
+      summary: Aktuellen Gerätestatus abrufen
+      description: |
+        Gibt die Geräte-ID, Laufzeit, WLAN- und MQTT-Verbindung
+        sowie die letzten Messwerte zurück.
+      responses:
+        '200':
+          description: Aktueller Gerätestatus
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceStatus'
+              example:
+                device_id: "yourmuesli-innsbruck-01"
+                uptime_seconds: 150
+                wifi_connected: true
+                mqtt_connected: true
+                last_telemetry:
+                  timestamp: "2026-11-03T14:17:02Z"
+                  value: 22.8
+                  unit: "°C"
+                last_humidity_percent: 61
 
 components:
   schemas:
@@ -48,5 +90,68 @@ components:
           example: "yourmuesli-innsbruck-01"
         reading_interval_seconds:
           type: integer
+          minimum: 2
           description: Sendeintervall in Sekunden
           example: 60
+      required:
+        - device_id
+        - reading_interval_seconds
+
+    ConfigUpdate:
+      type: object
+      description: Änderbare Konfigurationsparameter
+      properties:
+        reading_interval_seconds:
+          type: integer
+          minimum: 2
+          description: Neues Sendeintervall in Sekunden
+          example: 120
+      required:
+        - reading_interval_seconds
+
+    DeviceStatus:
+      type: object
+      description: Aktueller Status des Microcontrollers
+      properties:
+        device_id:
+          type: string
+          description: Gerätekennung aus settings.toml
+        uptime_seconds:
+          type: integer
+          minimum: 0
+          description: Laufzeit seit Programmstart in Sekunden
+        wifi_connected:
+          type: boolean
+          description: Status der WLAN-Verbindung
+        mqtt_connected:
+          type: boolean
+          description: Status der MQTT-Verbindung
+        last_telemetry:
+          type: object
+          nullable: true
+          description: Letzte erfolgreich gesendete Temperaturmessung (null, solange noch keine gesendet wurde)
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+                - "°C"
+          required:
+            - timestamp
+            - value
+            - unit
+        last_humidity_percent:
+          type: number
+          nullable: true
+          description: Zuletzt gemessene relative Luftfeuchtigkeit in Prozent (null, solange noch keine vorliegt)
+      required:
+        - device_id
+        - uptime_seconds
+        - wifi_connected
+        - mqtt_connected
+        - last_telemetry
+        - last_humidity_percent
