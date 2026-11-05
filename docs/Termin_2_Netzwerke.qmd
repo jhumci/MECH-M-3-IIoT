@@ -10,8 +10,8 @@
 - [ ] Der Microcontroller hat zwei HTTP-Endpunkte (unverschlüsselt), die JSON senden und empfangen:
   - `/config` (GET, POST): Zum Abrufen und Setzen der Konfiguration (z.B. Sendeintervall).
   - `/status` (GET): Zum Abrufen des aktuellen Status des Geräts (z.B. letzte gesendete Werte, Verbindungsstatus, Uptime).
-- [ ] Die Schnittstellen sind in der OpenAPI Specification dokumentiert, siehe [`openapi.yaml`](https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/openapi.yaml) und [`conventions.md`](https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md). Dort ist bisher nur `/config` beschrieben.
-- [ ] Einigen Sie sich in der Gesamtgruppe auf die Felder von `/status` und auf alle weiteren Felder von `/config`, die alle Sensoren unterstützen müssen, **bis vor dem 3. Synchron-Termin**. Vorgehen: Eine Gruppe stellt einen Pull Request gegen `docs/iot-specs/openapi.yaml` im Original-Repository mit einem Vorschlag. Die anderen Gruppen kommentieren dort. Was vor dem 3. Termin gemerged ist, gilt für alle.
+- [ ] Die Schnittstellen sind in der OpenAPI Specification dokumentiert, siehe [`openapi.yaml`](https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/openapi.yaml) und [`conventions.md`](https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md).
+- [ ] Setzen Sie `/config` und `/status` nach `openapi.yaml` (Version 1.2.0) um. Die dort beschriebenen Felder sind für alle Gruppen verbindlich, zusätzliche Felder dürfen Sie ergänzen. `/status` beruht auf dem Vorschlag einer Gruppe aus dem Kurs.
 - [ ] Schreiben Sie Testfälle, mit denen sich die HTTP-API Ihres Geräts überprüfen lässt, und legen Sie diese im Repository ab (z.B. unter `tests/`). Welches Werkzeug Sie dafür verwenden, hat Auswirkung auf die Bewertung: [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) in VS Code (*befriedigend*), `unittest` oder `pytest` in Python (*gut*), oder das OpenAPI-Tooling, z.B. [Schemathesis](https://schemathesis.readthedocs.io/) oder [Swagger Codegen](https://swagger.io/tools/swagger-codegen/) (*sehr gut*). Wie die Testfälle ausgeführt werden, sollte in der Dokumentation beschrieben sein.
 - [ ] Gehen Sie davon aus, dass Sie an allen Standorten Zugriff auf ein WLAN haben, welches durch eine externe Firewall geschützt ist (Whitelist). Schreiben Sie einen kurzen Absatz für Ihre Dokumentation, worauf die örtliche IT-Abteilung achten muss, wenn sie Ihre Geräte in das Netzwerk integriert, damit die Daten auch wirklich beim MQTT-Broker ankommen. Diskutieren Sie auch, wie Sie die HTTP-API aus der Ferne zugänglich machen können und welche Gefahren und Hindernisse bestehen.
 
@@ -36,7 +36,7 @@ Bauen Sie die HTTP-Schnittstelle in dieser Reihenfolge auf und testen Sie jeden 
    ```
 
    Danach `GET /config` erneut aufrufen: Der neue Wert muss zurückkommen, und der Sensor muss ab jetzt im neuen Intervall senden.
-4. **`GET /status`** nach dem Schema, das in der Gesamtgruppe vereinbart wurde.
+4. **`GET /status`** nach dem Schema in `openapi.yaml`.
 5. **Falsche Anfragen.** Unbekannter Pfad, falsche Methode, kaputtes JSON: Der Server antwortet mit dem passenden Statuscode (404, 405, 400) und läuft weiter, statt abzustürzen.
 6. **Testfälle** aus den `curl`-Aufrufen ableiten und im gewählten Werkzeug festhalten.
 

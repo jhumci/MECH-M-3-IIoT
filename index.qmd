@@ -12,8 +12,8 @@ Feedback und Anregungen sind jederzeit willkommen – gerne mündlich oder direk
 :::
 
 ## Zusammenarbeit
-Die Kommunikation findet über das gemeinsam genutzte [Repository](https://github.com/jhumci/MECH-M-3-IIoT) statt. Im Wiki sind alle relevanten Informationen zu Hintergrund, Aufgabenstellung und Anforderungen zu finden.
-Für die asynchrone Kommunikation mit der Lehrveranstaltungsleitung sollen *Issues* und *Pull Requests* im GitHub Repository genutzt werden. Die Abgabe erfolgt über den Link zu einem Fork des Original-Repositories, spätestens am **Freitag, 27.11.2026, 23:59 Uhr**.
+Die Kommunikation findet über das gemeinsam genutzte [Repository](https://github.com/jhumci/MECH-M-3-IIoT) statt. Hintergrund, Aufgabenstellung und Anforderungen stehen auf dieser Website.
+Für die asynchrone Kommunikation mit der Lehrveranstaltungsleitung sollen *Issues* und *Pull Requests* im GitHub Repository genutzt werden. Die Abgabe erfolgt über den Link zu Ihrem Fork des Original-Repositories in der Sakai-Aufgabe, spätestens am **Freitag, 27.11.2026, 23:59 Uhr**, siehe [Abgabe](#abgabe).
 
 ## Einsatz von Generativer KI
 Es wird davon ausgegangen, dass sowohl in der Wissensermittlung als auch in der Umsetzung generative KI-Tools (z.B. ChatGPT, GitHub Copilot) eingesetzt werden. Dies ist ausdrücklich erlaubt und wird nicht negativ bewertet.
@@ -51,6 +51,47 @@ Die Arbeit erfolgt in Gruppen, die im ersten Termin eingeteilt werden. Die Grupp
 ## Bewertung
 Die Bewertung der beiden Teile von IIoT erfolgt unabhängig voneinander. Die Noten (MCI-Punkte) werden anhand der SWS-Verteilung gemittelt. Zum Bestehen sind insgesamt 60% erforderlich.
 :::
+
+## Abgabe
+
+**Frist: Freitag, 27.11.2026, 23:59 Uhr.** Pro Gruppe eine Abgabe. Geben Sie in der Sakai-Aufgabe den Link zu Ihrem Fork ab. Bewertet wird der letzte Commit auf `main` vor der Frist. Der Fork muss öffentlich sein oder `Robo-Chris` Zugriff haben.
+
+Die Abgabe besteht aus drei Teilen. Alle drei sind Voraussetzung für die Bewertung.
+
+### 1. Code im Fork
+
+- [ ] Firmware unter `src/`, lauffähig mit einer `settings.toml` nach Anleitung
+- [ ] Testfälle für die HTTP-API unter `tests/`
+- [ ] Containerlösung mit `docker-compose.yml` (Pfad im README angegeben), Start mit `docker compose up` nach einem frischen `git clone` und den im README beschriebenen Schritten
+- [ ] Keine echten Passwörter im Repository, auch nicht in der Git-Historie: `settings.toml` mit Platzhaltern, Passwörter der Container in einer `.env`, die in `.gitignore` steht, dazu eine `.env.example`
+
+### 2. README.md im Hauptverzeichnis
+
+Ihr README ersetzt das vorhandene README des Forks und ist der Einstieg. Eine neue Person muss das System allein damit in Betrieb nehmen können. Details dürfen Sie auf andere Dateien auslagern (z.B. `docs/Dokumentation.qmd`), solange das README darauf verlinkt.
+
+- [ ] **Gruppe:** Namen, MQTT-Gruppenname (`iiot/group/...`)
+- [ ] **Video:** Link zur Bildschirmaufnahme
+- [ ] **Erreichter Stand:** welche Bewertungsstufe aus Termin 3 und welche Teststufe aus Termin 2 Sie beanspruchen, was nicht funktioniert
+- [ ] **Überblick:** Architektur in wenigen Sätzen oder als Skizze (Sensor, Broker, Speicher, Dashboard), Struktur des Repositories
+- [ ] **Mikrocontroller einrichten:** Hardware und Verkabelung, Firmware aufspielen, `settings.toml` ausfüllen, in ein bestehendes WLAN einbinden, prüfen, ob es funktioniert
+- [ ] **Container starten:** Voraussetzungen und alle Befehle vom `git clone` bis zum laufenden System, inklusive `.env`
+- [ ] **Dashboard nutzen:** URL, Login, was die Ansichten zeigen
+- [ ] **HTTP-API:** Endpunkte mit `curl`-Beispiel, Ausführen der Testfälle
+- [ ] **Hinweise für die IT-Abteilung:** ausgehende und eingehende Verbindungen für die Whitelist, Diskussion des Fernzugriffs auf die HTTP-API (Termin 2)
+- [ ] **Sicherheit:** ein kurzer Absatz, was eine Produktivversion zusätzlich bräuchte
+
+### 3. Bildschirmaufnahme (3–5 Minuten)
+
+Zeigen Sie das laufende System mit echtem Sensor und Live-Daten, mit Ton oder Einblendungen. Schnitte sind erlaubt. Zeigen Sie nur, was Ihre Lösung umfasst, in dieser Reihenfolge:
+
+1. **Gerät:** Pico W mit Sensor startet, serielle Konsole zeigt WLAN und IP-Adresse.
+2. **MQTT:** Ihre Messwerte und der Status im MQTT Explorer auf dem richtigen Topic. Wird das Gerät getrennt, erscheint `{"status": "offline"}`.
+3. **HTTP-API:** `GET /status`, `GET /config`, `POST /config` mit neuem Intervall. Das neue Intervall ist in den Nachrichten sichtbar. Danach laufen Ihre Testfälle.
+4. **Start:** `docker compose up` aus dem Repository, `docker compose ps` zeigt die laufenden Container.
+5. **Dashboard:** Ihre Live-Daten laufen ein, Aktualisierung sichtbar.
+6. **Bewertungsstufen:** Blick in die Datenbank (*befriedigend*). Ein neuer Sensor erscheint ohne Konfiguration, z.B. eine andere Gruppe oder eine Testnachricht mit `mosquitto_pub` auf `iiot/group/test-<ihr-name>/sensor/temperature/state` (*gut*). Geräteübersicht mit Anzahl, letzter Verbindung und Status (*sehr gut*). Kennzahlen (*Bonus*).
+
+Das Video muss ohne Anmeldung per Link abrufbar sein (z.B. nicht gelistet auf YouTube oder eine Freigabe über OneDrive) und bis zur Notenvergabe online bleiben. Legen Sie es nicht ins Repository: GitHub lehnt Dateien über 100 MB ab. Achten Sie darauf, dass in der Aufnahme keine Passwörter zu sehen sind.
 
 
 ## Storyline

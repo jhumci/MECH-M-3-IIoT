@@ -27,7 +27,12 @@ Die Stufen bauen aufeinander auf:
 **Bonus:** Zusätzliche Kennzahlen wie Mittelwert, Minimum und Maximum werden positiv berücksichtigt und können Schwächen in anderen Bereichen ausgleichen.
 
 ::: {.callout-note}
-Die Bewertungsstufen beziehen sich auf den Implementierungsumfang. Codequalität, Integration der Komponenten und Dokumentation fließen wie in den [Bewertungskriterien](../index.qmd#bewertungskriterien) beschrieben zusätzlich in die Bewertung ein.
+Die Bewertungsstufen beziehen sich auf den Implementierungsumfang. Codequalität, Integration der Komponenten und Dokumentation fließen wie in den [Bewertungskriterien](../index.qmd#bewertungskriterien) beschrieben zusätzlich in die Bewertung ein. Was Sie abgeben müssen, steht unter [Abgabe](../index.qmd#abgabe).
+:::
+
+::: {.callout-tip}
+## Status für die Geräteübersicht
+Die Übersicht liest das MQTT-Topic `iiot/group/+/status`, nicht den HTTP-Endpunkt `/status`: Die HTTP-API ist nur im lokalen Netz des Geräts erreichbar. Statusnachrichten sind JSON, z.B. `{"status": "ok"}`, siehe [`conventions.md`](https://github.com/jhumci/MECH-M-3-IIoT/blob/main/docs/iot-specs/conventions.md). Auf dem Broker können auch abweichende Nachrichten liegen. Ihre Lösung sollte diese abfangen, statt abzustürzen.
 :::
 
 ### Einstieg

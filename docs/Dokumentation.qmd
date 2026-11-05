@@ -2,7 +2,7 @@
 
 :::{.callout-tip}
 ## Hinweis
-Hier ist Platz für ihre Dokumentation. Dieses Dokument ist in [Quarto](https://quarto.org/) geschrieben und wird automatisch in HTML umgewandelt. Da Quarto ein Superset von Markdown ist, können Sie einfach wie gewohnt arbeiten aber auch weitere Funktionen nutzen. Zudem ist ein Strukturvorschlag gegeben, dieser muss aber nicht unbedingt eingehalten werden. Wichtig ist, dass die Dokumentation klar und verständlich ist und die relevanten Files auch als Link eingebunden werden.
+Der Einstieg in Ihre Dokumentation ist das `README.md` Ihres Forks, siehe [Abgabe](../index.qmd#abgabe). Hier ist optional Platz für Details, auf die das README verlinkt. Dieses Dokument ist in [Quarto](https://quarto.org/) geschrieben und wird automatisch in HTML umgewandelt. Da Quarto ein Superset von Markdown ist, können Sie einfach wie gewohnt arbeiten aber auch weitere Funktionen nutzen. Zudem ist ein Strukturvorschlag gegeben, dieser muss aber nicht unbedingt eingehalten werden. Wichtig ist, dass die Dokumentation klar und verständlich ist und die relevanten Files auch als Link eingebunden werden.
 :::
 
 ## Zusammenfassung der Aufgabenstellung und Ziele
